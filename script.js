@@ -194,70 +194,6 @@ contrastBtn.addEventListener("click", () => {
     aplicarContraste(!document.body.classList.contains("alto-contraste"));
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* ===== Animação das letras do título (sobem de baixo para cima) ===== */
 (function () {
   var h1 = document.getElementById("titulo-hero");
@@ -299,4 +235,107 @@ contrastBtn.addEventListener("click", () => {
   }
 
   dividir(h1);
+})();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ===== Seções aparecem ao rolar + barra de progresso ===== */
+(function () {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  /* Aparecer ao rolar */
+  if ("IntersectionObserver" in window) {
+    var alvos = document.querySelectorAll(
+      ".section-heading, .info-card, .report-grid > *, .tip, " +
+      ".results-panel > *, .contacts li, .help-banner > h2, " +
+      ".help-banner > p, .help-banner > .btn"
+    );
+
+    // Só esconde os elementos se o JS estiver funcionando
+    document.documentElement.classList.add("anima");
+
+    var obs = new IntersectionObserver(
+      function (entradas) {
+        entradas.forEach(function (e) {
+          if (e.isIntersecting) {
+            e.target.classList.add("visivel");
+            obs.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.12 }
+    );
+
+    alvos.forEach(function (el) {
+      var pos = Array.prototype.indexOf.call(el.parentNode.children, el);
+      el.style.setProperty("--atraso", Math.min(pos, 4) * 0.09 + "s");
+      el.classList.add("revelar");
+      obs.observe(el);
+    });
+  }
+
+  /* Barra de progresso de leitura no topo */
+  var barra = document.createElement("div");
+  barra.className = "barra-progresso";
+  barra.setAttribute("aria-hidden", "true");
+  document.body.appendChild(barra);
+
+  var pendente = false;
+  function atualizar() {
+    var total = document.documentElement.scrollHeight - innerHeight;
+    var p = total > 0 ? scrollY / total : 0;
+    barra.style.transform = "scaleX(" + Math.min(Math.max(p, 0), 1) + ")";
+    pendente = false;
+  }
+  addEventListener("scroll", function () {
+    if (!pendente) {
+      pendente = true;
+      requestAnimationFrame(atualizar);
+    }
+  }, { passive: true });
+  atualizar();
 })();
