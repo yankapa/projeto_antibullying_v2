@@ -854,62 +854,6 @@ footer a {
     transform: none;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* ===== Seções aparecem ao rolar ===== */
 @keyframes revelar-subir {
   from {
@@ -994,5 +938,98 @@ footer a {
   .contacts li:hover .contact-number,
   .btn:hover {
     transform: none;
+  }
+}
+/* ===== Caixa amarela de introdução (Sobre) ===== */
+:root {
+  --amarelo: #E0A800;
+  --amarelo-suave: #FFF4CC;
+}
+
+#sobre .section-heading p {
+  padding: 1.1rem 1.2rem;
+  border-left: 4px solid var(--amarelo);
+  border-radius: 0 0.25rem 0.25rem 0;
+  background: var(--amarelo-suave);
+  color: var(--ink);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+#sobre .section-heading p:hover {
+  transform: translateX(6px);
+  box-shadow: 0 6px 14px #E0A80033;
+  border-left-color: var(--coral);
+}
+
+/* Alto contraste: fundo branco, como as outras caixas */
+.alto-contraste #sobre .section-heading p {
+  background: #fff;
+  border-left-color: #000;
+}
+
+/* Movimento reduzido */
+@media (prefers-reduced-motion: reduce) {
+  #sobre .section-heading p {
+    transition: none;
+  }
+  #sobre .section-heading p:hover {
+    transform: none;
+  }
+}
+/* ===== Caixas verdes de introdução (só Denúncia e Dicas) ===== */
+:root {
+  --verde: #2E8B57;
+  --verde-suave: #E6F4EA;
+}
+
+#denuncia .section-heading p,
+#dicas .section-heading p {
+  padding: 1.1rem 1.2rem;
+  border-left: 4px solid var(--verde);
+  border-radius: 0 0.25rem 0.25rem 0;
+  background: var(--verde-suave);
+  color: var(--ink);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+#denuncia .section-heading p:hover,
+#dicas .section-heading p:hover {
+  transform: translateX(6px);
+  box-shadow: 0 6px 14px #2E8B5726;
+  border-left-color: var(--coral);
+}
+
+/* Alto contraste: fundo branco, como o aviso vermelho */
+.alto-contraste #denuncia .section-heading p,
+.alto-contraste #dicas .section-heading p {
+  background: #fff;
+  border-left-color: #13482b;
+}
+
+/* ===== Aviso do formulário pulsa ao aparecer ===== */
+@keyframes aviso-pulso {
+  0% { box-shadow: 0 0 0 0 #C8453F55; }
+  100% { box-shadow: 0 0 0 0.9rem #C8453F00; }
+}
+.report-steps.visivel .warning {
+  animation: aviso-pulso 1.2s ease-out 0.8s 2;
+}
+
+/* Movimento reduzido */
+@media (prefers-reduced-motion: reduce) {
+  #denuncia .section-heading p,
+  #dicas .section-heading p {
+    transition: none;
+  }
+  #denuncia .section-heading p:hover,
+  #dicas .section-heading p:hover {
+    transform: none;
+  }
+  .report-steps.visivel .warning {
+    animation: none;
   }
 }

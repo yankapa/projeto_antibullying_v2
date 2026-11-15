@@ -237,52 +237,6 @@ contrastBtn.addEventListener("click", () => {
   dividir(h1);
 })();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* ===== Seções aparecem ao rolar + barra de progresso ===== */
 (function () {
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
