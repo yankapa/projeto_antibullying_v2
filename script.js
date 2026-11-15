@@ -193,3 +193,135 @@ aplicarContraste(ler("contraste") === "1"); // lembra a escolha anterior
 contrastBtn.addEventListener("click", () => {
     aplicarContraste(!document.body.classList.contains("alto-contraste"));
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ===== Animação das letras do título (sobem de baixo para cima) ===== */
+(function () {
+  var h1 = document.getElementById("titulo-hero");
+  if (!h1) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  // Leitores de tela leem o título inteiro, não letra por letra
+  h1.setAttribute("aria-label", h1.textContent.trim());
+
+  var contador = 0;
+
+  function dividir(no) {
+    Array.from(no.childNodes).forEach(function (filho) {
+      if (filho.nodeType === 3) {
+        var fragmento = document.createDocumentFragment();
+        filho.textContent.split(/(\s+)/).forEach(function (parte) {
+          if (!parte) return;
+          if (/^\s+$/.test(parte)) {
+            fragmento.appendChild(document.createTextNode(" "));
+            return;
+          }
+          var palavra = document.createElement("span");
+          palavra.className = "palavra";
+          palavra.setAttribute("aria-hidden", "true");
+          Array.from(parte).forEach(function (letra) {
+            var l = document.createElement("span");
+            l.className = "letra";
+            l.textContent = letra;
+            l.style.animationDelay = 0.1 + 1 * contador++ + "s";
+            palavra.appendChild(l);
+          });
+          fragmento.appendChild(palavra);
+        });
+        no.replaceChild(fragmento, filho);
+      } else if (filho.nodeType === 1) {
+        dividir(filho); // entra no <em> de "entre nós." e mantém o vermelho
+      }
+    });
+  }
+
+  dividir(h1);
+})();

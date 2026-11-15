@@ -831,3 +831,127 @@ footer a {
     scroll-behavior: auto;
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ===== Letras do título subindo ===== */
+.hero-copy h1 {
+  animation: none; /* o título agora é animado letra por letra */
+}
+.palavra {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding: 0.1em 0.06em 0.14em;
+  margin: -0.1em -0.06em -0.14em;
+}
+.letra {
+  display: inline-block;
+  transform: translateY(110%);
+  animation: letra-subir 2s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+}
+@keyframes letra-subir {
+  to {
+    transform: none;
+  }
+}
