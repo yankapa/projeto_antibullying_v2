@@ -258,31 +258,6 @@ contrastBtn.addEventListener("click", () => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* ===== Animação das letras do título (sobem de baixo para cima) ===== */
 (function () {
   var h1 = document.getElementById("titulo-hero");
@@ -311,7 +286,7 @@ contrastBtn.addEventListener("click", () => {
             var l = document.createElement("span");
             l.className = "letra";
             l.textContent = letra;
-            l.style.animationDelay = 0.1 + 1 * contador++ + "s";
+            l.style.animationDelay = 0.1 + 0.04 * contador++ + "s";
             palavra.appendChild(l);
           });
           fragmento.appendChild(palavra);

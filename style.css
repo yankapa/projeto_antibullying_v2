@@ -883,56 +883,6 @@ footer a {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* ===== Letras do título subindo ===== */
 .hero-copy h1 {
   animation: none; /* o título agora é animado letra por letra */
@@ -948,7 +898,7 @@ footer a {
 .letra {
   display: inline-block;
   transform: translateY(110%);
-  animation: letra-subir 2s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+  animation: letra-subir 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
 }
 @keyframes letra-subir {
   to {
