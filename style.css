@@ -5,28 +5,38 @@
   font-weight: 200 800;
   font-display: swap;
 }
+
+/* ==========================================================
+   PALETA DO SITE: azul, branco e vermelho
+   Para mudar uma cor do site inteiro, altere só aqui.
+   ========================================================== */
 :root {
-  --paper: #faf9f4;
-  --ink: #101f32;
-  --muted: #52636b;
-  --sage: #456a59;
-  --sage-soft: #e9f0e9;
-  --coral: #b84637;
-  --line: #b9c9be;
-  --dark: #143e43;
+  /* Azuis */
+  --azul-escuro: #0F2A4A; /* títulos, textos fortes, rodapé */
+  --azul-medio: #2F5D9E; /* seção de ajuda, destaques azuis */
+  --azul-claro: #D6E4F5; /* cabeçalho */
+  --azul-gelo: #EAF1FA; /* fundo das seções Sobre e Resultados */
+
+  /* Neutros */
+  --branco: #FFFFFF;
+  --fundo: #FFFFFF;
+
+  /* Vermelho (usar só em pequenos destaques) */
+  --vermelho: #C8453F;
+  --vermelho-escuro: #A63631; /* hover do botão */
+  --vermelho-suave: #FBEDEC; /* fundo do aviso */
+
+  /* Nomes originais do site, agora apontando para a nova paleta */
+  --paper: #FFFFFF;
+  --ink: var(--azul-escuro);
+  --muted: #4A5A70;
+  --sage: var(--azul-medio); /* antes era verde, agora é azul */
+  --sage-soft: var(--azul-gelo);
+  --coral: var(--vermelho);
+  --line: #C9D6E6;
+  --dark: var(--azul-escuro);
   --page-width: 76rem;
   color-scheme: light;
-}
-
-:root{
-  --azul-escuro: #19365C;
-    --azul-medio: #527DA8;
-    --azul-claro: #A9C7E8;
-    --azul-gelo: #DCEAF5;
-    --rosa: #D9959D;
-    --fundo: #F7F5F2;
-    --branco: #FFFFFF;
-    
 }
 
 *,
@@ -103,8 +113,8 @@ a:hover {
   justify-content: flex-end;
   gap: 0.45rem;
   padding: 0.45rem max(1.25rem, calc((100vw - var(--page-width)) / 2));
-  background: var(--azul-medio);
-  color: var(--ink);
+  background: var(--azul-escuro);
+  color: #fff;
   font-size: 0.8125rem;
 }
 .a11y-bar span {
@@ -113,7 +123,7 @@ a:hover {
 .a11y-bar button {
   min-height: 2.5rem;
   padding: 0.35rem 0.65rem;
-  border: 1px solid var(--azul-medio);
+  border: 1px solid #8FADD6;
   background: transparent;
   color: inherit;
   border-radius: 0.25rem;
@@ -121,8 +131,8 @@ a:hover {
 }
 .a11y-bar button:hover,
 .a11y-bar button[aria-pressed="true"] {
-  background: var(--ink);
-  color: #fff;
+  background: #fff;
+  color: var(--azul-escuro);
 }
 .site-header {
   position: relative;
@@ -293,7 +303,7 @@ a:hover {
   color: #fff;
 }
 .btn-primary:hover {
-  background: #96382d;
+  background: var(--vermelho-escuro);
 }
 .btn-outline {
   border-color: currentColor;
@@ -441,7 +451,7 @@ a:hover {
   margin: 0.8rem 0 0;
   padding: 1.1rem 1.2rem;
   border-left: 4px solid var(--coral);
-  background: #f5eee8;
+  background: var(--vermelho-suave);
 }
 .warning a {
   font-weight: 700;
@@ -515,14 +525,14 @@ a:hover {
   margin: 0 0 2.5rem;
   padding: 0;
   list-style: none;
-  border-top: 1px solid #8daeb1;
+  border-top: 1px solid #8FADD6;
 }
 .contacts li {
   display: flex;
   align-items: baseline;
   gap: 1.1rem;
   padding: 1.15rem 0;
-  border-bottom: 1px solid #8daeb1;
+  border-bottom: 1px solid #8FADD6;
 }
 .contact-number,
 .contacts li > strong {
@@ -572,7 +582,7 @@ footer p {
 }
 footer .small-note,
 footer .small-note1 {
-  color: #d6e2df;
+  color: #D3DEEC;
   font-size: 0.9rem;
 }
 footer a {
@@ -582,7 +592,7 @@ footer a {
   --paper: #fff;
   --ink: #000;
   --muted: #111;
-  --sage: #13482b;
+  --sage: #0B3A7A;
   --sage-soft: #fff;
   --coral: #a12415;
   --line: #444;
@@ -638,7 +648,7 @@ footer a {
     padding: 0.5rem 1.25rem 1rem;
     background: var(--paper);
     border-bottom: 1px solid var(--line);
-    box-shadow: 0 12px 18px #101f3220;
+    box-shadow: 0 12px 18px #0F2A4A20;
   }
   .nav-links.open {
     display: grid;
