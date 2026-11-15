@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc*
+# The project vendors only the UI UX Pro Max search/design runtime and CSV guidance.
+/.agents/skills/ui-ux-pro-max/scripts/tests/
+/.agents/skills/ui-ux-pro-max/scripts/validate_data.py
+/.agents/skills/ui-ux-pro-max/data/google-font-licenses.json
+/.agents/skills/ui-ux-pro-max/data/phosphor-icons-upstream.json
+/.agents/skills/ui-ux-pro-max/data/data-provenance.json
+/.agents/skills/ui-ux-pro-max/data/catalog-summary.json

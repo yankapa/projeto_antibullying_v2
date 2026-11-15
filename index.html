@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-BR"> <!-- Idioma da página: ajuda leitores de tela a pronunciar certo -->
+<head>
+    <!-- Acentos e caracteres especiais -->
+    <meta charset="UTF-8">
+
+    <!-- Faz o site se ajustar a celulares e computadores -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Descrição que aparece em buscadores como o Google -->
+    <meta name="description" content="Projeto contra o bullying da EETEPA Vilhena Alves: informação, prevenção e orientações para buscar ajuda.">
+
+    <!-- Título que aparece na aba do navegador -->
+    <title>Contra o Bullying | Projeto estudantil da EETEPA Vilhena Alves</title>
+    <meta name="theme-color" content="#faf9f4">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+    <!-- Conecta o arquivo de estilos (só UMA vez; antes estava duplicado) -->
+    <link rel="stylesheet" href="style.css?v=3">
+</head>
+<body>
+    <!-- Link invisível que aparece ao apertar TAB: pula o menu e vai direto ao conteúdo -->
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+    <!-- ========== BARRA DE ACESSIBILIDADE ==========
+         Os botões são controlados pelo script.js (seção 5) -->
+    <div class="a11y-bar" role="region" aria-label="Opções de acessibilidade">
+        <span>Acessibilidade:</span>
+        <button type="button" id="fontMinus" aria-label="Diminuir tamanho do texto">A−</button>
+        <button type="button" id="fontPlus" aria-label="Aumentar tamanho do texto">A+</button>
+        <!-- aria-pressed informa ao leitor de tela se o modo está ligado ou desligado -->
+        <button type="button" id="contrastBtn" aria-pressed="false">Alto contraste</button>
+    </div>
+
+    <!-- ========== CABEÇALHO ========== -->
+    <header class="site-header">
+        <nav class="nav" aria-label="Menu principal">
+
+            <!-- Nome e identificação da escola -->
+            <a class="brand" href="#inicio">
+                <span class="brand-mark" aria-hidden="true">E.</span>
+                <span>EETEPA <strong>Vilhena Alves</strong><small>Projeto estudantil · Feira de ciências</small></span>
+            </a>
+
+            <!-- Links do menu. Cada href aponta para o id de uma seção abaixo.
+                 aria-current="location" marca o link da seção atual (o JS atualiza sozinho) -->
+            <div class="nav-links" id="navLinks">
+                <a href="#inicio" aria-current="location">Início</a>
+                <a href="#sobre">Sobre</a>
+                <a href="#denuncia">Denúncia anônima</a>
+                <a href="#dicas">Dicas</a>
+                <a href="#resultados">Resultados</a>
+                <a href="#ajuda">Ajuda</a>
+            </div>
+
+            <!-- Botões de pesquisa e de menu (o menu ☰ só aparece no celular) -->
+            <div class="nav-actions">
+                <button class="icon-btn" id="searchButton" aria-label="Abrir pesquisa" aria-expanded="false" aria-controls="searchPanel">Buscar</button>
+                <button class="icon-btn menu-button" id="menuButton" aria-label="Abrir menu" aria-expanded="false" aria-controls="navLinks">Menu</button>
+            </div>
+        </nav>
+
+        <!-- Campo de pesquisa (fica escondido até clicar na lupa) -->
+        <div class="search-panel" id="searchPanel">
+            <!-- Rótulo invisível na tela, mas lido por leitores de tela -->
+            <label for="searchInput" class="visually-hidden">Pesquisar no site</label>
+            <input id="searchInput" type="search" placeholder="Pesquise no site (ex.: cyberbullying)">
+            <!-- Mensagem de quantos resultados foram achados; aria-live avisa o leitor de tela -->
+            <p id="searchStatus" role="status" aria-live="polite"></p>
+        </div>
+    </header>
+
+    <!-- ========== CONTEÚDO PRINCIPAL ========== -->
+    <main id="conteudo">
+
+        <!-- ===== PÁGINA INICIAL ===== -->
+        <section class="hero" id="inicio" aria-labelledby="titulo-hero">
+
+            <!-- Texto principal -->
+            <div class="hero-copy">
+                <h1 id="titulo-hero">O respeito começa <em>entre nós.</em></h1>
+                <p>O bullying machuca e pode acontecer de muitas formas. Reconhecer, acolher e procurar apoio são atitudes que ajudam a transformar a convivência na escola.</p>
+
+                <!-- Botões de ação -->
+                <div class="actions">
+                    <a class="btn btn-primary" id="heroReportLink" href="#ajuda">Encontre apoio <span aria-hidden="true">↗</span></a>
+                    <a class="text-link" href="#sobre">Entenda o bullying <span aria-hidden="true">→</span></a>
+                </div>
+                <p class="campaign-note">Um projeto de estudantes da EETEPA Vilhena Alves.</p>
+            </div>
+
+            <nav class="hero-index" aria-label="Caminhos para começar">
+                <p>Por onde começar</p>
+                <a class="index-link pesquisavel" href="#sobre"><span aria-hidden="true">01</span><strong>Reconhecer</strong><span aria-hidden="true">↗</span></a>
+                <a class="index-link pesquisavel" href="#dicas"><span aria-hidden="true">02</span><strong>Acolher</strong><span aria-hidden="true">↗</span></a>
+                <a class="index-link pesquisavel" href="#ajuda"><span aria-hidden="true">03</span><strong>Buscar apoio</strong><span aria-hidden="true">↗</span></a>
+            </nav>
+        </section>
+
+        <!-- ===== SOBRE O BULLYING ===== -->
+        <section class="section" id="sobre" aria-labelledby="titulo-sobre">
+            <div class="section-heading">
+                <h2 id="titulo-sobre">Conhecimento ajuda a combater o bullying</h2>
+                <p>Bullying é violência intencional e repetida, com desequilíbrio de poder entre quem agride e quem sofre. No Brasil, a Lei 13.185/2015 criou o Programa de Combate à Intimidação Sistemática. Pode acontecer pessoalmente ou na internet.</p>
+            </div>
+
+            <!-- Tipos de bullying em uma lista editorial. -->
+            <div class="info-grid">
+                <article class="info-card pesquisavel">
+                    <h3>Bullying verbal</h3>
+                    <p>Ofensas, apelidos pejorativos, ameaças ou comentários repetidos para humilhar alguém.</p>
+                </article>
+                <article class="info-card pesquisavel">
+                    <h3>Bullying social</h3>
+                    <p>Excluir, isolar ou espalhar boatos repetidamente para prejudicar a convivência de alguém.</p>
+                </article>
+                <article class="info-card pesquisavel">
+                    <h3>Bullying físico</h3>
+                    <p>Empurrões, socos, chutes ou danos aos pertences de outra pessoa.</p>
+                </article>
+                <article class="info-card pesquisavel">
+                    <h3>Cyberbullying</h3>
+                    <p>Humilhações, ameaças ou exposição ofensiva feitas por redes sociais e mensagens.</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- ===== DENÚNCIA ANÔNIMA ===== -->
+        <section class="section highlight" id="denuncia" aria-labelledby="titulo-denuncia">
+            <div class="section-heading">
+                <h2 id="titulo-denuncia">Denúncia anônima</h2>
+                <p>Viu ou sofreu bullying? Conheça as orientações para relatar o caso e saiba onde buscar apoio.</p>
+            </div>
+
+            <div class="report-grid">
+
+                <!-- Coluna 1: passo a passo e botão do formulário -->
+                <div class="report-steps pesquisavel">
+                    <h3>Como fazer</h3>
+                    <ol id="reportSteps" hidden>
+                        <li>Clique no botão para abrir o formulário.</li>
+                        <li>Conte o que aconteceu, onde e quando. Não precisa colocar seu nome.</li>
+                        <li>Descreva quem está envolvido, se souber. Se não souber, tudo bem.</li>
+                        <li>Envie. A equipe pedagógica vai analisar o relato.</li>
+                    </ol>
+
+                    <!-- O link real do formulário é colocado pelo script.js (variável FORMULARIO_URL) -->
+                    <a class="btn btn-primary" id="reportLink" href="#denuncia" target="_blank" rel="noopener noreferrer" hidden>Abrir formulário anônimo</a>
+
+                    <!-- Aviso que só aparece se o link ainda não foi configurado (atributo hidden = escondido) -->
+                    <p class="warning" id="reportWarning">O formulário de denúncia anônima ainda não está disponível. Se você precisa de apoio agora, <a href="#ajuda">veja onde buscar ajuda</a> ou procure um adulto de confiança.</p>
+                </div>
+
+                <!-- Coluna 2: orientações antes de enviar -->
+                <div class="report-tips pesquisavel">
+                    <h3>Ao relatar um caso</h3>
+                    <ul>
+                        <li>Guarde provas, como prints de conversas, sem apagar nada.</li>
+                        <li>Descreva fatos, não opiniões: o que, onde, quando e quem.</li>
+                        <li>Não identifique ninguém sem ter certeza.</li>
+                        <li><strong>Em perigo imediato, não espere o formulário:</strong> chame um adulto ou ligue 190.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== DICAS DE PREVENÇÃO ===== -->
+        <section class="section" id="dicas" aria-labelledby="titulo-dicas">
+            <div class="section-heading">
+                <h2 id="titulo-dicas">Como ajudar a combater o bullying?</h2>
+                <p>Pequenas atitudes constroem uma escola mais respeitosa e acolhedora.</p>
+            </div>
+
+            <!-- Lista numerada (<ol>), pois as dicas formam uma sequência.
+                 Para adicionar uma dica, copie um <li> e troque o número -->
+            <ol class="tips-grid">
+                <li class="tip pesquisavel"><span class="tip-number" aria-hidden="true">1</span><div><h3>Não incentive</h3><p>Não compartilhe apelidos ofensivos, humilhações, imagens ou mensagens que exponham alguém.</p></div></li>
+                <li class="tip pesquisavel"><span class="tip-number" aria-hidden="true">2</span><div><h3>Acolha quem precisa</h3><p>Escute sem julgar e mostre que a pessoa não está sozinha.</p></div></li>
+                <li class="tip pesquisavel"><span class="tip-number" aria-hidden="true">3</span><div><h3>Procure um adulto de confiança</h3><p>Converse com um professor, responsável ou com a equipe pedagógica.</p></div></li>
+                <li class="tip pesquisavel"><span class="tip-number" aria-hidden="true">4</span><div><h3>Pratique o respeito</h3><p>Valorize as diferenças e construa relações baseadas em empatia e diálogo.</p></div></li>
+            </ol>
+        </section>
+
+        <!-- ===== RESULTADOS DA PESQUISA ESCOLAR ===== -->
+        <section class="section" id="resultados" aria-labelledby="titulo-resultados">
+            <div class="results-panel">
+                <div>
+                    <h2 id="titulo-resultados">Conheça a realidade por meio de dados</h2>
+                    <p>Esta área mostrará os resultados de uma pesquisa anônima e voluntária com estudantes da EETEPA Vilhena Alves, depois da coleta e análise das respostas.</p>
+                </div>
+
+                <!-- Espaço reservado: troque pelos gráficos quando a pesquisa terminar -->
+                <div class="results-placeholder">
+                    <strong>Pesquisa em preparação</strong>
+                    <span>Os dados serão publicados após a coleta e análise das respostas.</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== ÁREA DE AJUDA ===== -->
+        <section class="section" id="ajuda" aria-labelledby="titulo-ajuda">
+            <div class="help-banner">
+                <h2 id="titulo-ajuda">Você não está sozinho</h2>
+                <p>Procure um professor, a coordenação ou outro profissional de confiança da escola. Estes serviços também ajudam:</p>
+
+                <!-- Telefones úteis -->
+                <ul class="contacts">
+                    <li class="pesquisavel"><a class="contact-number" href="tel:190" aria-label="Ligar para a Polícia Militar, 190">190</a>Polícia Militar, em risco imediato</li>
+                    <li class="pesquisavel"><a class="contact-number" href="tel:100" aria-label="Ligar para o Disque Direitos Humanos, 100">100</a>Disque Direitos Humanos, para denunciar violações contra crianças e adolescentes</li>
+                    <li class="pesquisavel"><a class="contact-number" href="tel:188" aria-label="Ligar para o CVV, 188">188</a>CVV, apoio emocional 24 horas</li>
+                    <li class="pesquisavel"><strong>Conselho Tutelar</strong> procure o da sua cidade</li>
+                </ul>
+
+                <a class="btn btn-primary" href="#inicio">Voltar ao início</a>
+            </div>
+        </section>
+
+        <!-- Mensagem mostrada quando a pesquisa não encontra nada (o JS controla) -->
+        <p class="no-results" id="noResults" hidden>Nenhum resultado encontrado. Tente outra palavra.</p>
+    </main>
+
+    <!-- ========== RODAPÉ ========== -->
+    <footer>
+        <strong>EETEPA Vilhena Alves — Contra o Bullying</strong>
+        <p>Projeto educativo de conscientização e prevenção ao bullying.</p>
+        <p class="small-note">Protótipo desenvolvido para a feira de ciências.</p>
+        <p class="small-note1">Grupo: <a href="https://www.instagram.com/caioolliveira__/" target="_blank" rel="noopener noreferrer">Romulo</a>, <a href="https://www.instagram.com/_ogkauan/" target="_blank" rel="noopener noreferrer">Kauã</a>, <a href="https://www.instagram.com/samuel_zzk/" target="_blank" rel="noopener noreferrer">Samuel</a>, <a href="https://www.instagram.com/josuea.09/" target="_blank" rel="noopener noreferrer">Josué</a>, <a href="https://www.instagram.com/yanka.pa/" target="_blank" rel="noopener noreferrer">Yan</a></p>
+    </footer>
+
+    <!-- Conecta o JavaScript (fica no final para carregar depois do HTML) -->
+    <script src="script.js?v=3"></script>
+</body>
+</html>
