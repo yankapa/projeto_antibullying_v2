@@ -31,16 +31,17 @@ Uma publicação editorial feita por estudantes para ajudar colegas a reconhecer
 
 ## Composição e padrões
 
-- Hero em duas áreas: declaração à esquerda, índice de três atitudes à direita. No celular, uma única coluna.
+- Hero em uma coluna: problema, primeira ação e índice de três etapas.
 - Seções de conteúdo com títulos claros e listas separadas por regras finas; os quatro tipos de bullying deixam de ser cartões equivalentes.
-- Prevenção como sequência de ações. Resultados como estado vazio honesto, sem gráficos inventados.
+- Dados nacionais da PeNSE 2024 abrem a narrativa, identificados como nacionais e com fonte. Seguem reconhecimento, atitudes, relato e apoio.
+- O formulário envia relatos sem campos de nome ou contato para um banco privado no Sites. A página pública está no GitHub Pages.
 - Ajuda em área de alto contraste, com contato escolar antes dos serviços públicos. Números `tel:` acionáveis e emergência separada do acolhimento.
 - Cabeçalho simples, menu móvel acionável por teclado e foco visível. O modo alto contraste mantém sua identidade funcional.
 - Um único arquivo CSS de produção, sem framework ou dependência JavaScript nova.
 
 ## Movimento
 
-Somente feedback de hover e foco em controles. Sem entrada animada, rolagem coreografada ou conteúdo oculto antes de animações. `prefers-reduced-motion` remove deslocamentos.
+O título e as seções têm entradas breves. `prefers-reduced-motion` remove deslocamentos e animações.
 
 ## Breakpoints e verificação
 

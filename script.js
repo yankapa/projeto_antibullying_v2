@@ -1,13 +1,4 @@
 /* =========================================
-   CONFIGURAÇÃO — A ÚNICA COISA QUE VOCÊ PRECISA EDITAR
-   Cole entre as aspas o link do seu Google Forms de denúncia.
-   No Forms: desative "Coletar e-mails" e "Exigir login"
-   para manter o anonimato.
-   Exemplo: const FORMULARIO_URL = "https://forms.gle/abc123";
-   ========================================= */
-const FORMULARIO_URL = "";
-
-/* =========================================
    0. FUNÇÕES AUXILIARES
    Salvam e leem preferências (tamanho da letra e contraste).
    O try/catch evita erro se o navegador bloquear o armazenamento.
@@ -138,23 +129,44 @@ searchInput.addEventListener("keydown", (e) => {
     }
 });
 
-/* =========================================
-   4. FORMULÁRIO DE DENÚNCIA
-   ========================================= */
-const reportLink = document.querySelector("#reportLink");       // botão do formulário
-const reportSteps = document.querySelector("#reportSteps");
-const reportWarning = document.querySelector("#reportWarning");
-const heroReportLink = document.querySelector("#heroReportLink");
+/* 4. Envio do relato para a área privada do site. */
+const reportForm = document.querySelector("#reportForm");
+const reportStatus = document.querySelector("#reportStatus");
+const reportSubmit = document.querySelector("#reportSubmit");
+const reportApi = location.hostname === "yankapa.github.io"
+    ? "https://convivencia-sem-bullying-eetepa-2026.albertomaster.chatgpt.site/api/relatos"
+    : "/api/relatos";
 
-if (FORMULARIO_URL) {
-    // O formulário só aparece quando existe uma URL configurada.
-    reportLink.href = FORMULARIO_URL;
-    reportLink.hidden = false;
-    reportSteps.hidden = false;
-    reportWarning.hidden = true;
-    heroReportLink.href = "#denuncia";
-    heroReportLink.textContent = "Fazer denúncia anônima";
-}
+reportForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (!reportForm.reportValidity()) return;
+    reportSubmit.disabled = true;
+    reportStatus.dataset.state = "";
+    reportStatus.textContent = "Guardando o relato...";
+    const data = new FormData(reportForm);
+    try {
+        const response = await fetch(reportApi, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                papel: data.get("papel"),
+                local: data.get("local"),
+                quando: data.get("quando"),
+                descricao: data.get("descricao"),
+            }),
+        });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error || "Não foi possível enviar o relato.");
+        reportForm.reset();
+        reportStatus.dataset.state = "success";
+        reportStatus.textContent = "Relato guardado. Obrigado por pedir ajuda. Se houver perigo imediato, procure um adulto da escola ou ligue 190.";
+    } catch (error) {
+        reportStatus.dataset.state = "error";
+        reportStatus.textContent = error.message || "Não foi possível enviar o relato. Tente novamente.";
+    } finally {
+        reportSubmit.disabled = false;
+    }
+});
 
 /* =========================================
    5. ACESSIBILIDADE: TAMANHO DA LETRA E CONTRASTE
