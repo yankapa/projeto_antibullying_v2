@@ -31,8 +31,8 @@ Uma publicação editorial feita por estudantes para ajudar colegas a reconhecer
 
 ## Composição e padrões
 
-- Hero em duas áreas: declaração à esquerda, índice de três atitudes à direita. No celular, uma única coluna.
-- Seções de conteúdo com títulos claros e listas separadas por regras finas; os quatro tipos de bullying deixam de ser cartões equivalentes.
+- Hero em uma coluna: declaração seguida pelo índice de três atitudes, com cada link ocupando uma linha.
+- Seções de conteúdo com títulos claros e listas de largura única separadas por regras finas; os quatro tipos de bullying deixam de ser cartões equivalentes.
 - Prevenção como sequência de ações. Resultados como estado vazio honesto, sem gráficos inventados.
 - Ajuda em área de alto contraste, com contato escolar antes dos serviços públicos. Números `tel:` acionáveis e emergência separada do acolhimento.
 - Cabeçalho simples, menu móvel acionável por teclado e foco visível. O modo alto contraste mantém sua identidade funcional.
@@ -44,4 +44,4 @@ Somente feedback de hover e foco em controles. Sem entrada animada, rolagem core
 
 ## Breakpoints e verificação
 
-Validar 320, 390, 768, 1024 e 1440 px; também texto ampliado a 200%, teclado, pesquisa, menu, alto contraste e links internos. A implementação só é aprovada após inspeção real da interface e verificação de contraste WCAG 2.2 AA.
+Validar 320, 390, 768, 1024, 1440 e 1920 × 1080 px; também texto ampliado a 200%, teclado, pesquisa, menu, alto contraste e links internos. A implementação só é aprovada após inspeção real da interface e verificação de contraste WCAG 2.2 AA.
