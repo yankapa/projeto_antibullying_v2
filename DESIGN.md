@@ -4,7 +4,7 @@
 
 ## Direção
 
-Uma publicação editorial acolhedora feita por estudantes para ajudar colegas a reconhecer o bullying e encontrar apoio. A página começa pelo problema, apresenta o dado nacional com escala explícita e termina em atitudes, relato e ajuda. Uma coluna de leitura e margens amplas preservam a composição em celular e no monitor de 1920 × 1080.
+Uma publicação editorial acolhedora feita por estudantes para ajudar colegas a reconhecer o bullying e encontrar apoio. A página começa pelo problema, apresenta o dado nacional com escala explícita e termina em atitudes, relato e ajuda. A área principal cresce até 100rem, com margens fluidas; gráficos e listas chegam a 84rem, enquanto parágrafos e formulário mantêm medidas confortáveis. Em 1920 × 1080 a página usa melhor o monitor, e no celular conserva uma única coluna sem rolagem horizontal.
 
 ## Tokens
 
