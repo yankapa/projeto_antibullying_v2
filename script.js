@@ -343,3 +343,106 @@ contrastBtn.addEventListener("click", () => {
   form.addEventListener("reset", () => setTimeout(atualizar, 0));
   atualizar();
 })();
+
+/* =========================================
+   9. MODO APRESENTAÇÃO
+   P = tela cheia (liga/desliga) · → ou ↓ = avançar · ← ou ↑ = voltar
+   (↑ e ↓ só navegam em tela cheia; fora dela continuam rolando a página)
+   ========================================= */
+(function () {
+  const raiz = document.documentElement;
+  const podeTelaCheia = document.fullscreenEnabled || document.webkitFullscreenEnabled;
+  const emTelaCheia = () => Boolean(document.fullscreenElement || document.webkitFullscreenElement);
+  const movimentoReduzido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Aviso discreto na tela
+  const aviso = document.createElement("div");
+  aviso.className = "presenter-toast";
+  aviso.setAttribute("role", "status");
+  aviso.setAttribute("aria-live", "polite");
+  document.body.appendChild(aviso);
+  let timerAviso = 0;
+  function avisar(texto) {
+    aviso.textContent = texto;
+    aviso.classList.add("show");
+    clearTimeout(timerAviso);
+    timerAviso = setTimeout(() => aviso.classList.remove("show"), 2600);
+  }
+
+  function alternarTelaCheia() {
+    if (!podeTelaCheia) { avisar("Este navegador não permite tela cheia. Use F11."); return; }
+    if (emTelaCheia()) (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+    else (raiz.requestFullscreen || raiz.webkitRequestFullscreen).call(raiz).catch?.(() => avisar("Não foi possível abrir a tela cheia."));
+  }
+
+  // Botão na barra de acessibilidade (para quem usa mouse ou toque)
+  const barra = document.querySelector(".a11y-bar");
+  if (barra && podeTelaCheia) {
+    const botao = document.createElement("button");
+    botao.type = "button";
+    botao.id = "fullscreenBtn";
+    botao.setAttribute("aria-pressed", "false");
+    botao.innerHTML = 'Tela cheia <kbd aria-hidden="true">P</kbd>';
+    botao.addEventListener("click", alternarTelaCheia);
+    barra.appendChild(botao);
+  }
+
+  /* Paradas da apresentação: abertura, cada passo da história e cada capítulo. */
+  const altura = () => window.innerHeight;
+  const estreito = () => window.matchMedia("(max-width: 1099px)").matches || document.body.classList.contains("large-text");
+  const cabecalho = () => document.querySelector(".site-header").offsetHeight;
+  function paradas() {
+    const lista = [0];
+    const topo = (el) => el.getBoundingClientRect().top + window.scrollY - cabecalho();
+    const dados = document.querySelector("#dados");
+    if (dados) lista.push(topo(dados));
+    document.querySelectorAll(".story-step .step-card").forEach((card) => {
+      const r = card.getBoundingClientRect();
+      lista.push(r.top + window.scrollY + r.height / 2 - altura() * (estreito() ? 0.76 : 0.5));
+    });
+    ["#turma", "#recortes", "#motivos", "#sobre", "#dicas", "#denuncia", "#ajuda"].forEach((s) => {
+      const el = document.querySelector(s);
+      if (el && !el.hidden) lista.push(topo(el));
+    });
+    const max = document.documentElement.scrollHeight - altura();
+    return [...new Set(lista.map((y) => Math.round(Math.min(Math.max(y, 0), max))))].sort((a, b) => a - b);
+  }
+
+  let destino = null; // evita "pular" duas paradas se a tecla for apertada durante a rolagem
+  function irPara(direcao) {
+    const lista = paradas();
+    const atual = destino ?? window.scrollY;
+    const alvo = direcao > 0 ? lista.find((y) => y > atual + 4) : [...lista].reverse().find((y) => y < atual - 4);
+    if (alvo === undefined) return;
+    destino = alvo;
+    window.scrollTo({ top: alvo, behavior: movimentoReduzido ? "auto" : "smooth" });
+    clearTimeout(irPara.t);
+    irPara.t = setTimeout(() => { destino = null; }, 900);
+  }
+
+  function ignorar(alvo) {
+    return alvo.closest("input, textarea, select, [contenteditable], [role='tab'], [role='tablist']");
+  }
+
+  document.addEventListener("keydown", (e) => {
+    if (e.ctrlKey || e.metaKey || e.altKey || ignorar(e.target)) return;
+    if (e.key === "p" || e.key === "P") { e.preventDefault(); alternarTelaCheia(); return; }
+    const avancar = e.key === "ArrowRight" || e.key === "PageDown" || (emTelaCheia() && e.key === "ArrowDown");
+    const voltar = e.key === "ArrowLeft" || e.key === "PageUp" || (emTelaCheia() && e.key === "ArrowUp");
+    if (avancar || voltar) { e.preventDefault(); irPara(avancar ? 1 : -1); }
+  });
+
+  // Ao entrar/sair da tela cheia, mantém a mesma parada na tela
+  ["fullscreenchange", "webkitfullscreenchange"].forEach((ev) => document.addEventListener(ev, () => {
+    const ativo = emTelaCheia();
+    document.body.classList.toggle("modo-apresentacao", ativo);
+    document.querySelector("#fullscreenBtn")?.setAttribute("aria-pressed", String(ativo));
+    const antes = paradas();
+    const indice = antes.reduce((m, y, i) => (Math.abs(y - window.scrollY) < Math.abs(antes[m] - window.scrollY) ? i : m), 0);
+    setTimeout(() => {
+      const depois = paradas();
+      window.scrollTo({ top: depois[Math.min(indice, depois.length - 1)], behavior: "auto" });
+    }, 250);
+    if (ativo) avisar("Modo apresentação: ← → para navegar · P para sair");
+  }));
+})();

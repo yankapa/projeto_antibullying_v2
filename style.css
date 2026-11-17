@@ -658,3 +658,13 @@ body.alto-contraste .contacts li, body.alto-contraste .help-banner p { color: #0
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-delay: 0ms !important; transition-duration: .01ms !important; transition-delay: 0ms !important; }
 }
+
+/* Modo apresentação (tecla P) */
+.a11y-bar kbd { margin-left: .35rem; padding: 0 .3rem; border: 1px solid currentColor; border-radius: 3px; font: 700 .65rem/1.4 var(--sans); }
+.presenter-toast {
+  position: fixed; left: 50%; bottom: 1.6rem; z-index: 90; transform: translate(-50%, 1rem);
+  padding: .7rem 1.1rem; border-radius: 999px; background: rgba(23, 55, 52, .94); color: #fff;
+  font-size: .9rem; font-weight: 700; opacity: 0; pointer-events: none; transition: opacity .3s ease, transform .3s ease;
+}
+.presenter-toast.show { opacity: 1; transform: translate(-50%, 0); }
+body.modo-apresentacao .a11y-bar { display: none; }
