@@ -587,6 +587,32 @@ body.large-text .nav-links a::after { display: none; }
 body.large-text .nav-actions { margin-left: auto; }
 body.large-text .menu-button { display: inline-flex; align-items: center; }
 
+/* Simulador no celular: o resultado fica visível (fixo no topo) enquanto se ajusta a turma */
+@media (max-width: 1099px) {
+  .simulator { display: grid; gap: 0; }
+  .sim-copy { display: contents; }
+  .sim-copy > .kicker { order: 1; }
+  .sim-copy > h2 { order: 2; }
+  .sim-copy > p { order: 3; }
+  .sim-result {
+    order: 4; position: sticky; top: calc(var(--chrome) + .5rem); z-index: 2;
+    margin-top: 1.6rem; padding: 1rem 1rem 1.1rem; border-radius: 16px;
+    box-shadow: 0 10px 28px rgba(23, 55, 52, .14);
+  }
+  .sim-controls { order: 5; margin-top: 1.4rem; }
+  .classroom { grid-template-columns: repeat(9, minmax(0, 1fr)); gap: .25rem .45rem; max-width: 21rem; margin-inline: auto; }
+  .classroom .person { aspect-ratio: 3 / 3.8; }
+  .sim-sentence { margin-top: .8rem; font-size: 1.08rem; line-height: 1.32; }
+  .sim-sentence .sim-big { font-size: 1.6em; }
+  .sim-note { margin-top: .5rem; font-size: .72rem; }
+  .sim-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; }
+  .sim-metrics button { min-height: 3rem; padding: .55rem .75rem; font-size: .78rem; }
+  .sim-metrics button b { font-size: 1.25rem; }
+  .sim-controls input[type="range"] { height: 2.8rem; }
+  body.large-text .sim-result { position: static; }
+  body.large-text .sim-metrics { grid-template-columns: 1fr; }
+}
+
 /* =========================================================
    ALTO CONTRASTE
    ========================================================= */
@@ -640,8 +666,7 @@ body.alto-contraste .contacts li, body.alto-contraste .help-banner p { color: #0
   .section-heading h2, .help-banner h2, .story-intro h2, .sim-copy h2, .report-aside h2 { font-size: clamp(2.2rem, 8.6vw, 3.2rem); }
   .story-stage { height: 46svh; }
   .story-step { min-height: 75svh; }
-  .sim-metrics, .metric-switch { grid-template-columns: 1fr; }
-  .classroom { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+  .metric-switch { grid-template-columns: 1fr; }
   .metric-row { grid-template-columns: minmax(0, 1fr) auto; gap: .35rem .8rem; }
   .metric-row .metric-track { grid-column: 1 / -1; grid-row: 2; }
   .metric-scale { margin-inline: 0; }
