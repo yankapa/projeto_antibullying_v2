@@ -33,15 +33,17 @@ O corpo usa tinta escura sobre papel claro. O coral serve a ações e pontos de 
 
 - Hero em uma coluna: problema, primeira ação e índice de três etapas.
 - Seções de conteúdo com títulos claros e listas separadas por regras finas; os quatro tipos de bullying deixam de ser cartões equivalentes.
-- Dados nacionais da PeNSE 2024 abrem a narrativa, identificados como nacionais e com fonte. Seguem reconhecimento, atitudes, relato e apoio.
+- Dados nacionais da PeNSE 2024 abrem a narrativa, identificados como nacionais e com fonte. A comparação temporal vem antes dos recortes por sexo, rede de ensino e redes sociais; seguem reconhecimento, atitudes, relato e apoio.
+- A simulação tridimensional usa 1.000 pontos para representar percentuais de 2019 e 2024 sem substituir os números e barras acessíveis. O Three.js 0.187.0 é servido localmente e carregado apenas quando necessário; falhas de WebGL mantêm os dados legíveis.
+- Os três indicadores adicionais permanecem no HTML quando JavaScript está desativado. Com JavaScript, os controles alternam os recortes e anunciam a mudança a leitores de tela.
 - O formulário envia relatos sem campos de nome ou contato para um banco privado no Sites. A página pública está no GitHub Pages.
 - Ajuda em área quente e clara, com contato escolar antes dos serviços públicos. Números `tel:` acionáveis e emergência separada do acolhimento.
 - Cabeçalho simples, menu móvel acionável por teclado e foco visível. O modo alto contraste mantém sua identidade funcional.
-- Um único arquivo CSS de produção, sem framework ou dependência JavaScript nova.
+- Um único arquivo CSS de produção e um módulo JavaScript adicional para os dados, sem etapa de compilação no GitHub Pages.
 
 ## Movimento
 
-Os elementos permanecem visíveis durante toda a leitura. A barra fina de progresso acompanha o percurso e é removida quando há preferência por movimento reduzido.
+Os elementos permanecem visíveis durante toda a leitura. A barra fina de progresso acompanha o percurso. A transição dos pontos usa aceleração suave; `prefers-reduced-motion` desativa essa animação.
 
 ## Breakpoints e verificação
 

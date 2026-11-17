@@ -74,7 +74,7 @@ document.addEventListener("pointerdown", (event) => {
 });
 
 window.addEventListener("resize", () => {
-    if (window.innerWidth > 1060) fecharMenu();
+    if (window.innerWidth > 1180) fecharMenu();
 });
 
 
