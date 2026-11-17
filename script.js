@@ -15,6 +15,10 @@ const navLinks = document.querySelector("#navLinks");     // lista de links
 menuButton.addEventListener("click", () => {
     // toggle: adiciona a classe "open" se não tem, remove se já tem
     const aberto = navLinks.classList.toggle("open");
+    if (aberto) {
+        searchPanel.classList.remove("open");
+        searchButton.setAttribute("aria-expanded", "false");
+    }
     // Informa ao leitor de tela se o menu está aberto
     menuButton.setAttribute("aria-expanded", aberto);
 });
@@ -70,7 +74,7 @@ document.addEventListener("pointerdown", (event) => {
 });
 
 window.addEventListener("resize", () => {
-    if (window.innerWidth > 760) fecharMenu();
+    if (window.innerWidth > 1060) fecharMenu();
 });
 
 
@@ -90,6 +94,7 @@ const itens = document.querySelectorAll(".pesquisavel");
 // Abre e fecha o campo ao clicar na lupa
 searchButton.addEventListener("click", () => {
     const aberto = searchPanel.classList.toggle("open");
+    if (aberto) fecharMenu();
     searchButton.setAttribute("aria-expanded", aberto);
     if (aberto) searchInput.focus(); // já deixa o cursor pronto para digitar
 });
@@ -178,6 +183,7 @@ let tamanho = Math.min(200, Math.max(80, parseInt(ler("tamanho"), 10) || 100));
 
 const aplicarTamanho = () => {
     document.documentElement.style.fontSize = tamanho + "%";
+    document.body.classList.toggle("large-text", tamanho >= 140);
     guardar("tamanho", tamanho);
 };
 aplicarTamanho(); // aplica assim que a página abre
@@ -206,101 +212,25 @@ contrastBtn.addEventListener("click", () => {
     aplicarContraste(!document.body.classList.contains("alto-contraste"));
 });
 
-/* ===== Animação das letras do título (sobem de baixo para cima) ===== */
+/* Progresso discreto de leitura, respeitando movimento reduzido. */
 (function () {
-  var h1 = document.getElementById("titulo-hero");
-  if (!h1) return;
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-  // Leitores de tela leem o título inteiro, não letra por letra
-  h1.setAttribute("aria-label", h1.textContent.trim());
-
-  var contador = 0;
-
-  function dividir(no) {
-    Array.from(no.childNodes).forEach(function (filho) {
-      if (filho.nodeType === 3) {
-        var fragmento = document.createDocumentFragment();
-        filho.textContent.split(/(\s+)/).forEach(function (parte) {
-          if (!parte) return;
-          if (/^\s+$/.test(parte)) {
-            fragmento.appendChild(document.createTextNode(" "));
-            return;
-          }
-          var palavra = document.createElement("span");
-          palavra.className = "palavra";
-          palavra.setAttribute("aria-hidden", "true");
-          Array.from(parte).forEach(function (letra) {
-            var l = document.createElement("span");
-            l.className = "letra";
-            l.textContent = letra;
-            l.style.animationDelay = 0.1 + 0.04 * contador++ + "s";
-            palavra.appendChild(l);
-          });
-          fragmento.appendChild(palavra);
-        });
-        no.replaceChild(fragmento, filho);
-      } else if (filho.nodeType === 1) {
-        dividir(filho); // entra no <em> de "entre nós." e mantém o vermelho
-      }
-    });
-  }
-
-  dividir(h1);
-})();
-
-/* ===== Seções aparecem ao rolar + barra de progresso ===== */
-(function () {
-  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-  /* Aparecer ao rolar */
-  if ("IntersectionObserver" in window) {
-    var alvos = document.querySelectorAll(
-      ".section-heading, .info-card, .report-grid > *, .tip, " +
-      ".results-panel > *, .contacts li, .help-banner > h2, " +
-      ".help-banner > p, .help-banner > .btn"
-    );
-
-    // Só esconde os elementos se o JS estiver funcionando
-    document.documentElement.classList.add("anima");
-
-    var obs = new IntersectionObserver(
-      function (entradas) {
-        entradas.forEach(function (e) {
-          if (e.isIntersecting) {
-            e.target.classList.add("visivel");
-            obs.unobserve(e.target);
-          }
-        });
-      },
-      { threshold: 0.12 }
-    );
-
-    alvos.forEach(function (el) {
-      var pos = Array.prototype.indexOf.call(el.parentNode.children, el);
-      el.style.setProperty("--atraso", Math.min(pos, 4) * 0.09 + "s");
-      el.classList.add("revelar");
-      obs.observe(el);
-    });
-  }
-
-  /* Barra de progresso de leitura no topo */
-  var barra = document.createElement("div");
+  const barra = document.createElement("div");
   barra.className = "barra-progresso";
   barra.setAttribute("aria-hidden", "true");
   document.body.appendChild(barra);
 
-  var pendente = false;
+  let pendente = false;
   function atualizar() {
-    var total = document.documentElement.scrollHeight - innerHeight;
-    var p = total > 0 ? scrollY / total : 0;
-    barra.style.transform = "scaleX(" + Math.min(Math.max(p, 0), 1) + ")";
+    const total = document.documentElement.scrollHeight - window.innerHeight;
+    const progresso = total > 0 ? window.scrollY / total : 0;
+    barra.style.transform = "scaleX(" + Math.min(Math.max(progresso, 0), 1) + ")";
     pendente = false;
   }
-  addEventListener("scroll", function () {
+  window.addEventListener("scroll", () => {
     if (!pendente) {
       pendente = true;
-      requestAnimationFrame(atualizar);
+      window.requestAnimationFrame(atualizar);
     }
   }, { passive: true });
   atualizar();

@@ -12,8 +12,10 @@
 
     <!-- Título que aparece na aba do navegador -->
     <title>Contra o Bullying | Projeto estudantil da EETEPA Vilhena Alves</title>
-    <meta name="theme-color" content="#faf9f4">
+    <meta name="theme-color" content="#f7f4ed">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="preload" href="assets/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="assets/fonts/alegreya-latin.woff2" as="font" type="font/woff2" crossorigin>
 
     <!-- Conecta o arquivo de estilos (só UMA vez; antes estava duplicado) -->
     <link rel="stylesheet" href="style.css">
@@ -76,14 +78,13 @@
         <!-- ===== PÁGINA INICIAL ===== -->
         <section class="hero" id="inicio" aria-labelledby="titulo-hero">
             <div class="hero-copy">
-                <p class="eyebrow">Um projeto da turma de Ciência de Dados</p>
                 <h1 id="titulo-hero">Quando a violência vira rotina, <em>o silêncio pesa.</em></h1>
                 <p>Bullying não é uma brincadeira quando machuca e se repete. Entender o problema é o primeiro passo para mudar a convivência na escola.</p>
                 <div class="actions">
                     <a class="btn btn-primary" href="#dados">Veja os dados <span aria-hidden="true">↓</span></a>
                     <a class="text-link" id="heroReportLink" href="#denuncia">Preciso relatar um caso <span aria-hidden="true">↗</span></a>
                 </div>
-                <p class="campaign-note">EETEPA Vilhena Alves · Feira de ciências</p>
+                <p class="campaign-note">Um projeto da turma de Ciência de Dados · EETEPA Vilhena Alves</p>
             </div>
             <nav class="hero-index" aria-label="Caminho desta página">
                 <p>Do problema à ação</p>
@@ -95,7 +96,6 @@
 
         <section class="section story-data" id="dados" aria-labelledby="titulo-dados">
             <div class="section-heading">
-                <p class="eyebrow">01 / O problema em números</p>
                 <h2 id="titulo-dados">Em cada sala, há histórias que podem passar despercebidas.</h2>
                 <p>Na PeNSE 2024, estudantes de 13 a 17 anos de escolas brasileiras responderam sobre situações vividas nos 30 dias anteriores à pesquisa. Estes são dados nacionais, não resultados da nossa escola.</p>
             </div>
@@ -103,9 +103,10 @@
                 <strong class="data-number">27,2<span>%</span></strong>
                 <p>relataram ter sofrido bullying <strong>duas ou mais vezes</strong> nesse período.</p>
                 <div class="data-bars" aria-label="Bullying recorrente: 23,0% em 2019 e 27,2% em 2024">
-                    <div><span>2019</span><span class="bar-track"><span style="width: 23%"></span></span><strong>23,0%</strong></div>
-                    <div><span>2024</span><span class="bar-track"><span style="width: 27.2%"></span></span><strong>27,2%</strong></div>
+                    <div><span>2019</span><span class="bar-track"><span style="width: 76.67%"></span></span><strong>23,0%</strong></div>
+                    <div><span>2024</span><span class="bar-track"><span style="width: 90.67%"></span></span><strong>27,2%</strong></div>
                 </div>
+                <p class="chart-scale">Escala: 0 a 30% dos estudantes</p>
                 <p class="data-note">A comparação mostra um aumento de 4,2 pontos percentuais. Fonte: <a href="https://agenciadenoticias.ibge.gov.br/agencia-sala-de-imprensa/2013-agencia-de-noticias/releases/46171-5-edicao-da-pense-meninas-sao-as-maiores-vitimas-de-violencia-sexual" target="_blank" rel="noopener noreferrer">IBGE, PeNSE 2024</a>.</p>
             </div>
         </section>
@@ -113,7 +114,7 @@
         <!-- ===== SOBRE O BULLYING ===== -->
         <section class="section" id="sobre" aria-labelledby="titulo-sobre">
             <div class="section-heading">
-                <p class="eyebrow">02 / Reconhecer os sinais</p><h2 id="titulo-sobre">Reconhecer é o começo da mudança.</h2>
+                <h2 id="titulo-sobre">Reconhecer é o começo da mudança.</h2>
                 <p>Bullying é violência intencional e repetida, com desequilíbrio de poder entre quem agride e quem sofre. No Brasil, a Lei 13.185/2015 criou o Programa de Combate à Intimidação Sistemática. Pode acontecer pessoalmente ou na internet.</p>
             </div>
 
@@ -141,7 +142,7 @@
         <!-- ===== DENÚNCIA ANÔNIMA ===== -->
         <section class="section" id="dicas" aria-labelledby="titulo-dicas">
             <div class="section-heading">
-                <p class="eyebrow">03 / A solução começa por atitudes</p><h2 id="titulo-dicas">O que podemos fazer hoje?</h2>
+                <h2 id="titulo-dicas">O que podemos fazer hoje?</h2>
                 <p>Pequenas atitudes constroem uma escola mais respeitosa e acolhedora.</p>
             </div>
 
@@ -157,7 +158,6 @@
 
         <section class="section highlight" id="denuncia" aria-labelledby="titulo-denuncia">
             <div class="section-heading">
-                <p class="eyebrow">04 / Um caminho para pedir ajuda</p>
                 <h2 id="titulo-denuncia">Relate o que aconteceu</h2>
                 <p>Você pode descrever uma situação sem informar seu nome. Um relato ajuda a identificar o que precisa de atenção, mas não substitui ajuda imediata em caso de perigo.</p>
             </div>
@@ -209,7 +209,7 @@
         <!-- ===== ÁREA DE AJUDA ===== -->
         <section class="section" id="ajuda" aria-labelledby="titulo-ajuda">
             <div class="help-banner">
-                <p class="eyebrow">05 / Apoio de verdade</p><h2 id="titulo-ajuda">Você não precisa enfrentar isso sozinho.</h2>
+                <h2 id="titulo-ajuda">Você não precisa enfrentar isso sozinho.</h2>
                 <p>Procure um professor, a coordenação ou outro profissional de confiança da escola. Estes serviços também ajudam:</p>
 
                 <!-- Telefones úteis -->
