@@ -31,15 +31,17 @@ O corpo usa tinta escura sobre papel claro. O coral serve a ações e pontos de 
 
 ## Composição e padrões
 
-- Hero em uma coluna: problema, primeira ação e índice de três etapas.
-- Seções de conteúdo com títulos claros e listas separadas por regras finas; os quatro tipos de bullying deixam de ser cartões equivalentes.
-- Dados nacionais da PeNSE 2024 abrem a narrativa, identificados como nacionais e com fonte. A comparação temporal vem antes dos recortes por sexo, rede de ensino e redes sociais; seguem reconhecimento, atitudes, relato e apoio.
-- A simulação tridimensional usa 1.000 pontos para representar percentuais de 2019 e 2024 sem substituir os números e barras acessíveis. O Three.js 0.187.0 é servido localmente e carregado apenas quando necessário; falhas de WebGL mantêm os dados legíveis.
-- Os três indicadores adicionais permanecem no HTML quando JavaScript está desativado. Com JavaScript, os controles alternam os recortes e anunciam a mudança a leitores de tela.
-- O formulário envia relatos sem campos de nome ou contato para um banco privado no Sites. A página pública está no GitHub Pages.
-- Ajuda em área quente e clara, com contato escolar antes dos serviços públicos. Números `tel:` acionáveis e emergência separada do acolhimento.
-- Cabeçalho simples, menu móvel acionável por teclado e foco visível. O modo alto contraste mantém sua identidade funcional.
-- Um único arquivo CSS de produção e um módulo JavaScript adicional para os dados, sem etapa de compilação no GitHub Pages.
+- Narrativa em capítulos que ocupam a altura da tela em 1920 × 1080 (área útil de até 100rem), com conteúdo em duas colunas no monitor e uma coluna no celular ou com texto ampliado.
+- Abertura: título, chamada e pictograma 4 em 10 com contador animado (39,8%), mais uma faixa de cinco capítulos.
+- Capítulo 01, história com rolagem: palco fixo com 1.000 cubos em Three.js (InstancedMesh) e oito passos de texto. Cada passo reorganiza os pontos: dispersos, reunidos, 2019 × 2024, meninas × meninos, redes sociais e prática. Sem WebGL, um canvas 2D desenha a mesma cena; sem JavaScript, os passos trazem todos os números.
+- Capítulo 02, simulador: controle deslizante do tamanho da turma (15 a 45) e quatro indicadores; mostra a estimativa proporcional com pictograma e frase acessível (aria-live).
+- Capítulo 03, recortes: três indicadores com barras animadas, mesma escala (0 a 35%) e marcador do total nacional.
+- Motivos: barras selecionáveis (rosto/cabelo, não sabe, corpo, cor da pele) com nota explicativa.
+- Capítulo 04, reconhecer: três sinais do bullying, teste interativo de quatro situações com retorno e placar, e os quatro tipos em quatro colunas.
+- Capítulo 05, agir: abas acessíveis (setas do teclado) por situação — sofri, presenciei, pratiquei.
+- Relato: orientações à esquerda e formulário à direita, com barra de progresso e contador de caracteres. O envio segue para o banco privado no Sites.
+- Ajuda: contatos em grade 2 × 2. O modo alto contraste e o texto ampliado continuam funcionais (o menu vira botão com texto ampliado).
+- Dados: IBGE, PeNSE 2024 (nacionais). Motivos citados conforme divulgação reproduzida pelo Jornal de Brasília.
 
 ## Movimento
 

@@ -74,7 +74,7 @@ document.addEventListener("pointerdown", (event) => {
 });
 
 window.addEventListener("resize", () => {
-    if (window.innerWidth > 1180) fecharMenu();
+    if (window.innerWidth > 1280 && !document.body.classList.contains("large-text")) fecharMenu();
 });
 
 
@@ -233,5 +233,113 @@ contrastBtn.addEventListener("click", () => {
       window.requestAnimationFrame(atualizar);
     }
   }, { passive: true });
+  atualizar();
+})();
+
+/* =========================================
+   6. TESTE "É BULLYING OU NÃO?"
+   Cada situação tem a resposta certa no atributo data-answer.
+   ========================================= */
+(function () {
+  const quiz = document.querySelector("#quiz");
+  if (!quiz) return;
+  const itens = [...quiz.querySelectorAll(".quiz-item")];
+  const placar = quiz.querySelector("#quizScore");
+  const reset = document.createElement("button");
+  reset.type = "button";
+  reset.className = "quiz-reset";
+  reset.textContent = "Responder de novo";
+  reset.hidden = true;
+  quiz.append(reset);
+
+  function atualizarPlacar() {
+    const respondidos = itens.filter((i) => i.dataset.result);
+    const acertos = respondidos.filter((i) => i.dataset.result === "certo").length;
+    placar.textContent = respondidos.length === 0 ? "Responda às 4 situações."
+      : respondidos.length < itens.length ? `${acertos} acerto(s) em ${respondidos.length} de ${itens.length}.`
+      : `Você acertou ${acertos} de ${itens.length}. ${acertos === itens.length ? "Ótimo olhar!" : "Os três sinais ajudam a decidir."}`;
+    reset.hidden = respondidos.length < itens.length;
+  }
+
+  itens.forEach((item) => {
+    item.querySelectorAll("button[data-choice]").forEach((botao) => {
+      botao.addEventListener("click", () => {
+        if (item.dataset.result) return;
+        item.dataset.result = botao.dataset.choice === item.dataset.answer ? "certo" : "errado";
+        item.querySelectorAll("button[data-choice]").forEach((b) => {
+          b.disabled = true;
+          b.setAttribute("aria-pressed", String(b === botao));
+        });
+        atualizarPlacar();
+      });
+    });
+  });
+
+  reset.addEventListener("click", () => {
+    itens.forEach((item) => {
+      delete item.dataset.result;
+      item.querySelectorAll("button[data-choice]").forEach((b) => { b.disabled = false; b.removeAttribute("aria-pressed"); });
+    });
+    atualizarPlacar();
+    itens[0].querySelector("button").focus();
+  });
+})();
+
+/* =========================================
+   7. ABAS "COMO AGIR" (setas do teclado trocam a aba)
+   ========================================= */
+(function () {
+  const lista = document.querySelector("#actTabs");
+  if (!lista) return;
+  const abas = [...lista.querySelectorAll('[role="tab"]')];
+  const paineis = abas.map((a) => document.getElementById(a.getAttribute("aria-controls")));
+
+  function abrir(aba, focar = false) {
+    abas.forEach((a, i) => {
+      const ativa = a === aba;
+      a.setAttribute("aria-selected", String(ativa));
+      a.tabIndex = ativa ? 0 : -1;
+      paineis[i].hidden = !ativa;
+      paineis[i].classList.toggle("is-entering", ativa);
+    });
+    if (focar) aba.focus();
+  }
+  lista.hidden = false;
+  abrir(abas[0]);
+  abas.forEach((aba, i) => {
+    aba.addEventListener("click", () => abrir(aba));
+    aba.addEventListener("keydown", (e) => {
+      const mapa = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 };
+      if (e.key in mapa) { e.preventDefault(); abrir(abas[(i + mapa[e.key] + abas.length) % abas.length], true); }
+      if (e.key === "Home") { e.preventDefault(); abrir(abas[0], true); }
+      if (e.key === "End") { e.preventDefault(); abrir(abas[abas.length - 1], true); }
+    });
+  });
+})();
+
+/* =========================================
+   8. FORMULÁRIO: contador de caracteres e progresso
+   ========================================= */
+(function () {
+  const form = document.querySelector("#reportForm");
+  if (!form) return;
+  const texto = form.querySelector("#reportDescription");
+  const contador = form.querySelector("#reportCounter");
+  const barra = form.querySelector("#formProgressBar");
+  const legenda = form.querySelector("#formProgressText");
+  const campos = [form.querySelector("#reportRole"), form.querySelector("#reportPlace"), form.querySelector("#reportWhen")];
+  const confirma = form.querySelector("#reportConfirm");
+
+  function atualizar() {
+    const n = texto.value.length;
+    contador.textContent = n.toLocaleString("pt-BR") + " / 2.000";
+    contador.classList.toggle("is-short", n > 0 && n < 20);
+    const feitos = campos.filter((c) => c.value).length + (n >= 20 ? 1 : 0) + (confirma.checked ? 1 : 0);
+    barra.style.width = (feitos / 5) * 100 + "%";
+    legenda.textContent = feitos + " de 5 itens preenchidos";
+  }
+  form.addEventListener("input", atualizar);
+  form.addEventListener("change", atualizar);
+  form.addEventListener("reset", () => setTimeout(atualizar, 0));
   atualizar();
 })();

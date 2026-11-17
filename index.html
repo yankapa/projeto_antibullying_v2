@@ -1,199 +1,354 @@
 <!DOCTYPE html>
 <html lang="pt-BR"> <!-- Idioma da página: ajuda leitores de tela a pronunciar certo -->
 <head>
-    <!-- Acentos e caracteres especiais -->
     <meta charset="UTF-8">
-
     <!-- Faz o site se ajustar a celulares e computadores -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- Descrição que aparece em buscadores como o Google -->
-    <meta name="description" content="Projeto contra o bullying da EETEPA Vilhena Alves: informação, prevenção e orientações para buscar ajuda.">
-
-    <!-- Título que aparece na aba do navegador -->
+    <meta name="description" content="Projeto contra o bullying da turma de Ciência de Dados da EETEPA Vilhena Alves: dados da PeNSE 2024 contados de forma interativa, orientações e canal de relato anônimo.">
     <title>Contra o Bullying | Projeto estudantil da EETEPA Vilhena Alves</title>
     <meta name="theme-color" content="#f7f4ed">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="preload" href="assets/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="assets/fonts/alegreya-latin.woff2" as="font" type="font/woff2" crossorigin>
-
-    <!-- Conecta o arquivo de estilos (só UMA vez; antes estava duplicado) -->
-    <link rel="stylesheet" href="style.css?v=responsive-20261117">
+    <link rel="stylesheet" href="style.css?v=story-20261117">
+    <!-- Marca que o JavaScript está ativo: o CSS só esconde respostas e animações quando ele funciona -->
+    <script>document.documentElement.classList.add("js");</script>
 </head>
 <body>
-    <!-- Link invisível que aparece ao apertar TAB: pula o menu e vai direto ao conteúdo -->
     <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
 
-    <!-- ========== BARRA DE ACESSIBILIDADE ==========
-         Os botões são controlados pelo script.js (seção 5) -->
+    <!-- ========== BARRA DE ACESSIBILIDADE (script.js, seção 5) ========== -->
     <div class="a11y-bar" role="region" aria-label="Opções de acessibilidade">
         <span>Acessibilidade:</span>
         <button type="button" id="fontMinus" aria-label="Diminuir tamanho do texto">A−</button>
         <button type="button" id="fontPlus" aria-label="Aumentar tamanho do texto">A+</button>
-        <!-- aria-pressed informa ao leitor de tela se o modo está ligado ou desligado -->
         <button type="button" id="contrastBtn" aria-pressed="false">Alto contraste</button>
     </div>
 
     <!-- ========== CABEÇALHO ========== -->
     <header class="site-header">
         <nav class="nav" aria-label="Menu principal">
-
-            <!-- Nome e identificação da escola -->
             <a class="brand" href="#inicio">
                 <span class="brand-mark" aria-hidden="true">E.</span>
                 <span>EETEPA <strong>Vilhena Alves</strong><small>Turma de Ciência de Dados · Feira de ciências</small></span>
             </a>
-
-            <!-- Links do menu. Cada href aponta para o id de uma seção abaixo.
-                 aria-current="location" marca o link da seção atual (o JS atualiza sozinho) -->
+            <!-- aria-current="location" marca a seção atual (o JS atualiza sozinho) -->
             <div class="nav-links" id="navLinks">
                 <a href="#inicio" aria-current="location">Início</a>
-                <a href="#dados">Os dados</a>
+                <a href="#dados">A história</a>
+                <a href="#turma">Sua turma</a>
                 <a href="#recortes">Recortes</a>
+                <a href="#motivos">Motivos</a>
                 <a href="#sobre">Reconhecer</a>
                 <a href="#dicas">Como agir</a>
                 <a href="#denuncia">Relatar</a>
                 <a href="#ajuda">Ajuda</a>
             </div>
-
-            <!-- Botões de pesquisa e de menu (o menu ☰ só aparece no celular) -->
             <div class="nav-actions">
                 <button class="icon-btn" id="searchButton" aria-label="Abrir pesquisa" aria-expanded="false" aria-controls="searchPanel">Buscar</button>
                 <button class="icon-btn menu-button" id="menuButton" aria-label="Abrir menu" aria-expanded="false" aria-controls="navLinks">Menu</button>
             </div>
         </nav>
-
-        <!-- Campo de pesquisa (fica escondido até clicar na lupa) -->
         <div class="search-panel" id="searchPanel">
-            <!-- Rótulo invisível na tela, mas lido por leitores de tela -->
             <label for="searchInput" class="visually-hidden">Pesquisar no site</label>
             <input id="searchInput" type="search" placeholder="Pesquise no site (ex.: cyberbullying)">
-            <!-- Mensagem de quantos resultados foram achados; aria-live avisa o leitor de tela -->
             <p id="searchStatus" role="status" aria-live="polite"></p>
         </div>
     </header>
 
-    <!-- ========== CONTEÚDO PRINCIPAL ========== -->
     <main id="conteudo">
 
-        <!-- ===== PÁGINA INICIAL ===== -->
-        <section class="hero" id="inicio" aria-labelledby="titulo-hero">
+        <!-- ===== 1. ABERTURA: o problema ===== -->
+        <section class="hero chapter" id="inicio" aria-labelledby="titulo-hero">
             <div class="hero-copy">
+                <p class="kicker">PeNSE 2024 · IBGE · estudantes de 13 a 17 anos</p>
                 <h1 id="titulo-hero">Quando a violência vira rotina, <em>o silêncio pesa.</em></h1>
-                <p>Bullying não é uma brincadeira quando machuca e se repete. Entender o problema é o primeiro passo para mudar a convivência na escola.</p>
+                <p class="hero-lead">Bullying não é brincadeira quando machuca e se repete. Usamos dados nacionais para mostrar o tamanho do problema — e o que cada pessoa pode fazer a partir dele.</p>
                 <div class="actions">
-                    <a class="btn btn-primary" href="#dados">Veja os dados <span aria-hidden="true">↓</span></a>
+                    <a class="btn btn-primary" href="#dados">Começar pela história dos dados <span aria-hidden="true">↓</span></a>
                     <a class="text-link" id="heroReportLink" href="#denuncia">Preciso relatar um caso <span aria-hidden="true">↗</span></a>
                 </div>
-                <p class="campaign-note">Um projeto da turma de Ciência de Dados · EETEPA Vilhena Alves</p>
             </div>
-            <nav class="hero-index" aria-label="Caminho desta página">
-                <p>Do problema à ação</p>
-                <a class="index-link" href="#dados"><span>01</span><strong>Entender a dimensão</strong><span aria-hidden="true">↗</span></a>
-                <a class="index-link" href="#recortes"><span>02</span><strong>Explorar os recortes</strong><span aria-hidden="true">↗</span></a>
-                <a class="index-link" href="#dicas"><span>03</span><strong>Agir com cuidado</strong><span aria-hidden="true">↗</span></a>
+
+            <!-- Pictograma: 10 pessoas, 4 destacadas. O texto ao lado traz o valor exato. -->
+            <figure class="hero-figure" aria-labelledby="heroFigureCaption">
+                <div class="people" id="heroPeople" aria-hidden="true">
+                    <span class="person is-hit"></span><span class="person is-hit"></span><span class="person is-hit"></span><span class="person is-hit"></span><span class="person"></span>
+                    <span class="person"></span><span class="person"></span><span class="person"></span><span class="person"></span><span class="person"></span>
+                </div>
+                <figcaption id="heroFigureCaption">
+                    <strong class="hero-stat"><span data-count-to="39.8" data-decimals="1">39,8</span><small>%</small></strong>
+                    <span>Quase <b>4 em cada 10</b> estudantes declararam ter sofrido bullying na escola.</span>
+                    <span class="hero-source">Dado nacional · IBGE, PeNSE 2024</span>
+                </figcaption>
+            </figure>
+
+            <nav class="chapter-strip" aria-label="Capítulos desta página">
+                <a href="#dados"><span>01</span>O problema em 1.000 pontos</a>
+                <a href="#turma"><span>02</span>E na sua turma?</a>
+                <a href="#recortes"><span>03</span>Quem é mais atingido</a>
+                <a href="#sobre"><span>04</span>Reconhecer</a>
+                <a href="#dicas"><span>05</span>Agir e pedir ajuda</a>
             </nav>
         </section>
 
-        <section class="section story-data" id="dados" aria-labelledby="titulo-dados">
-            <div class="section-heading">
+        <!-- ===== 2. HISTÓRIA COM ROLAGEM: a visualização fica fixa e muda a cada passo ===== -->
+        <section class="story" id="dados" aria-labelledby="titulo-dados">
+            <div class="story-intro">
+                <p class="kicker">Capítulo 01 · O problema</p>
                 <h2 id="titulo-dados">Em cada sala, há histórias que podem passar despercebidas.</h2>
-                <p>Na PeNSE 2024, estudantes de 13 a 17 anos de escolas brasileiras responderam sobre situações vividas nos 30 dias anteriores à pesquisa. Estes são dados nacionais, não resultados da nossa escola.</p>
+                <p>Role a página. Cada ponto representa uma pessoa em um grupo hipotético de 1.000 estudantes; as proporções vêm da PeNSE 2024. São dados <strong>nacionais</strong>, não resultados da nossa escola.</p>
             </div>
-            <div class="data-focus">
-                <strong class="data-number">27,2<span>%</span></strong>
-                <p>relataram ter sofrido bullying <strong>duas ou mais vezes</strong> nesse período.</p>
-                <div class="data-bars" aria-label="Bullying recorrente: 23,0% em 2019 e 27,2% em 2024">
-                    <div><span>2019</span><span class="bar-track"><span style="width: 76.67%"></span></span><strong>23,0%</strong></div>
-                    <div><span>2024</span><span class="bar-track"><span style="width: 90.67%"></span></span><strong>27,2%</strong></div>
+
+            <div class="story-body">
+                <div class="story-stage" aria-hidden="true">
+                    <div class="story-canvas" id="storyCanvas">
+                        <p class="scene-fallback">Carregando a visualização…</p>
+                    </div>
+                    <div class="story-labels" id="storyLabels"></div>
+                    <div class="story-hud">
+                        <strong id="storyCount">1.000</strong>
+                        <span id="storyHudText">estudantes no grupo</span>
+                    </div>
+                    <ul class="story-legend" id="storyLegend"></ul>
                 </div>
-                <p class="chart-scale">Escala: 0 a 30% dos estudantes</p>
-                <p class="data-note">A comparação mostra um aumento de 4,2 pontos percentuais. Fonte: <a href="https://agenciadenoticias.ibge.gov.br/agencia-sala-de-imprensa/2013-agencia-de-noticias/releases/46171-5-edicao-da-pense-meninas-sao-as-maiores-vitimas-de-violencia-sexual" target="_blank" rel="noopener noreferrer">IBGE, PeNSE 2024</a>.</p>
+
+                <!-- Cada passo tem o número exato em texto; a visualização é um reforço -->
+                <ol class="story-steps" id="storySteps">
+                    <li class="story-step" data-step="intro">
+                        <div class="step-card">
+                        <p class="step-num">1/8</p>
+                        <h3>Imagine 1.000 estudantes.</h3>
+                        <p>Gente de 13 a 17 anos, de escolas públicas e privadas de todo o Brasil. Gente como a da nossa sala.</p>
+                        </div>
+                    </li>
+                    <li class="story-step" data-step="ever">
+                        <div class="step-card">
+                        <p class="step-num">2/8</p>
+                        <h3><span class="hl-soft">398</span> declararam ter sofrido bullying.</h3>
+                        <p>São <strong>39,8%</strong> dos estudantes: quase 4 em cada 10. Entre as meninas, 43,3%; entre os meninos, 37,3%.</p>
+                        </div>
+                    </li>
+                    <li class="story-step" data-step="recurrent">
+                        <div class="step-card">
+                        <p class="step-num">3/8</p>
+                        <h3>Para <span class="hl-peach">272</span>, não foi um episódio isolado.</h3>
+                        <p><strong>27,2%</strong> foram provocados, ofendidos ou humilhados <strong>duas ou mais vezes</strong> nos 30 dias anteriores à pesquisa. Espalhados pela sala, quase não se percebem.</p>
+                        </div>
+                    </li>
+                    <li class="story-step" data-step="gather">
+                        <div class="step-card">
+                        <p class="step-num">4/8</p>
+                        <h3>Juntos, o tamanho do problema aparece.</h3>
+                        <p>Reunidos, os 272 pontos ocupam mais de um quarto do grupo. É isso que os dados fazem: tornam visível o que estava disperso.</p>
+                        </div>
+                    </li>
+                    <li class="story-step" data-step="trend">
+                        <div class="step-card">
+                        <p class="step-num">5/8</p>
+                        <h3>Em 2019 eram <span class="hl-mint">230</span>. Agora, <span class="hl-hot">+42</span>.</h3>
+                        <p>O bullying recorrente subiu de <strong>23,0%</strong> para <strong>27,2%</strong>: 4,2 pontos percentuais em cinco anos. Episódios repetidos ficaram mais frequentes.</p>
+                        </div>
+                    </li>
+                    <li class="story-step" data-step="sex">
+                        <div class="step-card">
+                        <p class="step-num">6/8</p>
+                        <h3>As meninas são as mais atingidas.</h3>
+                        <p>Bullying recorrente: <strong>30,1%</strong> das meninas e <strong>24,3%</strong> dos meninos. Na visualização, 500 meninas e 500 meninos aparecem separados.</p>
+                        </div>
+                    </li>
+                    <li class="story-step" data-step="social">
+                        <div class="step-card">
+                        <p class="step-num">7/8</p>
+                        <h3>Também chega ao celular: <span class="hl-sand">127</span>.</h3>
+                        <p><strong>12,7%</strong> relataram bullying nas redes sociais — 15,2% das meninas e 10,3% dos meninos. A violência não termina no portão da escola.</p>
+                        </div>
+                    </li>
+                    <li class="story-step" data-step="practice">
+                        <div class="step-card">
+                        <p class="step-num">8/8</p>
+                        <h3><span class="hl-hot">137</span> admitiram ter praticado.</h3>
+                        <p><strong>13,7%</strong> declararam ter praticado bullying, quase metade do percentual de vítimas recorrentes. Quem pratica também está entre nós — e pode mudar.</p>
+                        <a class="btn btn-light" href="#turma">E na sua turma? <span aria-hidden="true">↓</span></a>
+                        </div>
+                    </li>
+                </ol>
             </div>
-            <div class="population-block" aria-labelledby="populationTitle">
-                <h3 id="populationTitle">O aumento, visto de perto.</h3>
-                <p>Uma simulação proporcional: em um grupo hipotético de 1.000 estudantes, cada ponto representa uma pessoa. O gráfico acima traz os percentuais exatos.</p>
-                <div class="year-controls" id="yearControls" role="group" aria-label="Ano da simulação" hidden>
-                    <button type="button" data-year="2019" aria-pressed="false">2019</button>
-                    <button type="button" data-year="2024" aria-pressed="true">2024</button>
+            <p class="story-source">Fonte: <a href="https://agenciadenoticias.ibge.gov.br/agencia-sala-de-imprensa/46171-5-edicao-da-pense-meninas-sao-as-maiores-vitimas-de-violencia-sexual.html" target="_blank" rel="noopener noreferrer">IBGE, PeNSE 2024</a>. Simulação proporcional: os pontos não são pessoas reais.</p>
+        </section>
+
+        <!-- ===== 3. SIMULADOR: aproxima o dado nacional da sala de aula ===== -->
+        <section class="section chapter simulator" id="turma" aria-labelledby="titulo-turma">
+            <div class="sim-copy">
+                <p class="kicker">Capítulo 02 · Perto de nós</p>
+                <h2 id="titulo-turma">E se a proporção nacional estivesse na sua turma?</h2>
+                <p>Escolha o tamanho da turma e o indicador. O resultado é uma <strong>estimativa proporcional</strong>: não mede a nossa escola, mas ajuda a imaginar quantos colegas uma porcentagem representa.</p>
+
+                <div class="sim-controls" id="simControls">
+                    <label class="sim-range" for="classSize">
+                        <span>Pessoas na turma</span>
+                        <output id="classSizeOut" for="classSize">35</output>
+                    </label>
+                    <input type="range" id="classSize" min="15" max="45" value="35" step="1">
+                    <div class="sim-metrics" role="group" aria-label="Indicador da simulação">
+                        <button type="button" data-rate="27.2" data-label="sofreram bullying repetidas vezes no último mês" aria-pressed="true">Bullying recorrente <b>27,2%</b></button>
+                        <button type="button" data-rate="16.6" data-label="foram agredidos fisicamente por colegas" aria-pressed="false">Agressão física <b>16,6%</b></button>
+                        <button type="button" data-rate="13.7" data-label="declararam ter praticado bullying" aria-pressed="false">Praticou bullying <b>13,7%</b></button>
+                        <button type="button" data-rate="12.7" data-label="sofreram bullying nas redes sociais" aria-pressed="false">Redes sociais <b>12,7%</b></button>
+                    </div>
                 </div>
-                <div class="population-scene" id="populationScene" aria-hidden="true">
-                    <p class="scene-fallback">A visualização 3D é complementar. Compare os valores no gráfico acima.</p>
-                </div>
-                <p class="population-caption" id="populationCaption" aria-live="polite"><strong>272 de 1.000</strong> na simulação de 2024. Em 2019, seriam 230 de 1.000.</p>
+            </div>
+
+            <div class="sim-result">
+                <div class="classroom" id="classroom" aria-hidden="true"></div>
+                <p class="sim-sentence" id="simSentence" aria-live="polite">Em uma turma de <strong>35</strong> pessoas, cerca de <strong class="sim-big">10</strong> sofreram bullying repetidas vezes no último mês.</p>
+                <p class="sim-note">Cálculo: tamanho da turma × porcentagem nacional, arredondado. Fonte: IBGE, PeNSE 2024.</p>
             </div>
         </section>
 
-        <section class="section data-breakdown" id="recortes" aria-labelledby="titulo-recortes">
+        <!-- ===== 4. RECORTES: quem é mais atingido ===== -->
+        <section class="section chapter data-breakdown" id="recortes" aria-labelledby="titulo-recortes">
             <div class="section-heading">
-                <h2 id="titulo-recortes">O problema muda de forma. Os dados ajudam a enxergar onde.</h2>
-                <p>Explore três indicadores nacionais da PeNSE 2024. Cada percentual se refere aos estudantes do grupo indicado; as barras usam a mesma escala, de 0 a 35%.</p>
+                <p class="kicker">Capítulo 03 · Recortes</p>
+                <h2 id="titulo-recortes">O problema muda de forma. Os dados mostram onde.</h2>
+                <p>Escolha um indicador. As barras usam a mesma escala, de 0 a 35%, e a linha vertical marca o total nacional.</p>
             </div>
             <div class="metric-switch" id="metricSwitch" role="group" aria-label="Escolher indicador" hidden>
-                <button type="button" data-metric="vitimas" aria-pressed="true">Sofrer bullying</button>
-                <button type="button" data-metric="redes" aria-pressed="false">Nas redes sociais</button>
-                <button type="button" data-metric="pratica" aria-pressed="false">Praticar bullying</button>
+                <button type="button" data-metric="vitimas" aria-pressed="true"><span>Sofrer bullying</span><b>27,2%</b></button>
+                <button type="button" data-metric="redes" aria-pressed="false"><span>Nas redes sociais</span><b>12,7%</b></button>
+                <button type="button" data-metric="pratica" aria-pressed="false"><span>Praticar bullying</span><b>13,7%</b></button>
             </div>
             <p class="visually-hidden" id="metricAnnouncement" aria-live="polite"></p>
 
-            <article class="metric-panel" id="metricVitimas" data-metric-panel="vitimas">
-                <div class="metric-lead">
-                    <strong>27,2%</strong>
-                    <div><h3>Sofrer bullying repetidas vezes</h3><p>Estudantes que relataram provocações de colegas que os deixaram magoados, ofendidos ou humilhados duas ou mais vezes nos 30 dias anteriores à pesquisa.</p></div>
-                </div>
-                <div class="metric-group"><h4>Por sexo</h4>
-                    <div class="metric-row"><span>Meninas</span><span class="metric-track"><span style="width:86%"></span></span><strong>30,1%</strong></div>
-                    <div class="metric-row"><span>Meninos</span><span class="metric-track"><span style="width:69.4%"></span></span><strong>24,3%</strong></div>
-                </div>
-                <div class="metric-group"><h4>Por rede de ensino</h4>
-                    <div class="metric-row"><span>Pública</span><span class="metric-track"><span style="width:77.7%"></span></span><strong>27,2%</strong></div>
-                    <div class="metric-row"><span>Privada</span><span class="metric-track"><span style="width:78.6%"></span></span><strong>27,5%</strong></div>
-                </div>
-                <p class="metric-insight">As meninas relataram mais episódios recorrentes. Entre as redes pública e privada, a diferença foi de apenas 0,3 ponto percentual.</p>
-            </article>
+            <div class="metric-panels">
+                <article class="metric-panel" id="metricVitimas" data-metric-panel="vitimas" style="--total: 27.2">
+                    <div class="metric-lead">
+                        <strong>27,2%</strong>
+                        <div><h3>Sofrer bullying repetidas vezes</h3><p>Estudantes que relataram provocações de colegas que os deixaram magoados, ofendidos ou humilhados duas ou mais vezes nos 30 dias anteriores à pesquisa.</p></div>
+                        <p class="metric-insight">As meninas relataram mais episódios recorrentes. Entre as redes pública e privada, a diferença foi de apenas 0,3 ponto percentual.</p>
+                    </div>
+                    <div class="metric-charts">
+                        <div class="metric-group"><h4>Por sexo</h4>
+                            <div class="metric-row"><span>Meninas</span><span class="metric-track"><span style="width:86%"></span></span><strong>30,1%</strong></div>
+                            <div class="metric-row"><span>Meninos</span><span class="metric-track"><span style="width:69.4%"></span></span><strong>24,3%</strong></div>
+                        </div>
+                        <div class="metric-group"><h4>Por rede de ensino</h4>
+                            <div class="metric-row"><span>Pública</span><span class="metric-track"><span style="width:77.7%"></span></span><strong>27,2%</strong></div>
+                            <div class="metric-row"><span>Privada</span><span class="metric-track"><span style="width:78.6%"></span></span><strong>27,5%</strong></div>
+                        </div>
+                        <p class="metric-scale"><span>0%</span><span>Total nacional</span><span>35%</span></p>
+                    </div>
+                </article>
 
-            <article class="metric-panel" id="metricRedes" data-metric-panel="redes">
-                <div class="metric-lead">
-                    <strong>12,7%</strong>
-                    <div><h3>Bullying nas redes sociais</h3><p>Cerca de um em cada oito estudantes relatou ter sofrido bullying nas redes sociais. A exposição também varia entre os grupos.</p></div>
-                </div>
-                <div class="metric-group"><h4>Por sexo</h4>
-                    <div class="metric-row"><span>Meninas</span><span class="metric-track"><span style="width:43.4%"></span></span><strong>15,2%</strong></div>
-                    <div class="metric-row"><span>Meninos</span><span class="metric-track"><span style="width:29.4%"></span></span><strong>10,3%</strong></div>
-                </div>
-                <div class="metric-group"><h4>Por rede de ensino</h4>
-                    <div class="metric-row"><span>Pública</span><span class="metric-track"><span style="width:38.3%"></span></span><strong>13,4%</strong></div>
-                    <div class="metric-row"><span>Privada</span><span class="metric-track"><span style="width:26.9%"></span></span><strong>9,4%</strong></div>
-                </div>
-                <p class="metric-insight">Nas redes sociais, o percentual relatado por meninas superou o dos meninos em 4,9 pontos percentuais.</p>
-            </article>
+                <article class="metric-panel" id="metricRedes" data-metric-panel="redes" style="--total: 12.7">
+                    <div class="metric-lead">
+                        <strong>12,7%</strong>
+                        <div><h3>Bullying nas redes sociais</h3><p>Cerca de um em cada oito estudantes relatou ter sofrido bullying nas redes sociais. A exposição também varia entre os grupos.</p></div>
+                        <p class="metric-insight">Nas redes sociais, o percentual relatado por meninas superou o dos meninos em 4,9 pontos percentuais.</p>
+                    </div>
+                    <div class="metric-charts">
+                        <div class="metric-group"><h4>Por sexo</h4>
+                            <div class="metric-row"><span>Meninas</span><span class="metric-track"><span style="width:43.4%"></span></span><strong>15,2%</strong></div>
+                            <div class="metric-row"><span>Meninos</span><span class="metric-track"><span style="width:29.4%"></span></span><strong>10,3%</strong></div>
+                        </div>
+                        <div class="metric-group"><h4>Por rede de ensino</h4>
+                            <div class="metric-row"><span>Pública</span><span class="metric-track"><span style="width:38.3%"></span></span><strong>13,4%</strong></div>
+                            <div class="metric-row"><span>Privada</span><span class="metric-track"><span style="width:26.9%"></span></span><strong>9,4%</strong></div>
+                        </div>
+                        <p class="metric-scale"><span>0%</span><span>Total nacional</span><span>35%</span></p>
+                    </div>
+                </article>
 
-            <article class="metric-panel" id="metricPratica" data-metric-panel="pratica">
-                <div class="metric-lead">
-                    <strong>13,7%</strong>
-                    <div><h3>Praticar bullying</h3><p>Percentual de estudantes que declararam ter praticado bullying nos 30 dias anteriores à pesquisa.</p></div>
-                </div>
-                <div class="metric-group"><h4>Por sexo</h4>
-                    <div class="metric-row"><span>Meninos</span><span class="metric-track"><span style="width:47.1%"></span></span><strong>16,5%</strong></div>
-                    <div class="metric-row"><span>Meninas</span><span class="metric-track"><span style="width:31.1%"></span></span><strong>10,9%</strong></div>
-                </div>
-                <div class="metric-group"><h4>Por rede de ensino</h4>
-                    <div class="metric-row"><span>Pública</span><span class="metric-track"><span style="width:38.9%"></span></span><strong>13,6%</strong></div>
-                    <div class="metric-row"><span>Privada</span><span class="metric-track"><span style="width:40%"></span></span><strong>14,0%</strong></div>
-                </div>
-                <p class="metric-insight">Os meninos declararam praticar bullying com maior frequência. O indicador mede autodeclaração, não identifica pessoas nem casos da escola.</p>
-            </article>
-            <p class="metric-source">Fonte: <a href="https://agenciadenoticias.ibge.gov.br/agencia-sala-de-imprensa/2013-agencia-de-noticias/releases/46171-5-edicao-da-pense-meninas-sao-as-maiores-vitimas-de-violencia-sexual" target="_blank" rel="noopener noreferrer">IBGE, PeNSE 2024</a>. Dados nacionais, não resultados da EETEPA Vilhena Alves.</p>
+                <article class="metric-panel" id="metricPratica" data-metric-panel="pratica" style="--total: 13.7">
+                    <div class="metric-lead">
+                        <strong>13,7%</strong>
+                        <div><h3>Praticar bullying</h3><p>Percentual de estudantes que declararam ter praticado bullying nos 30 dias anteriores à pesquisa.</p></div>
+                        <p class="metric-insight">Os meninos declararam praticar bullying com maior frequência. O indicador mede autodeclaração, não identifica pessoas nem casos da escola.</p>
+                    </div>
+                    <div class="metric-charts">
+                        <div class="metric-group"><h4>Por sexo</h4>
+                            <div class="metric-row"><span>Meninos</span><span class="metric-track"><span style="width:47.1%"></span></span><strong>16,5%</strong></div>
+                            <div class="metric-row"><span>Meninas</span><span class="metric-track"><span style="width:31.1%"></span></span><strong>10,9%</strong></div>
+                        </div>
+                        <div class="metric-group"><h4>Por rede de ensino</h4>
+                            <div class="metric-row"><span>Pública</span><span class="metric-track"><span style="width:38.9%"></span></span><strong>13,6%</strong></div>
+                            <div class="metric-row"><span>Privada</span><span class="metric-track"><span style="width:40%"></span></span><strong>14,0%</strong></div>
+                        </div>
+                        <p class="metric-scale"><span>0%</span><span>Total nacional</span><span>35%</span></p>
+                    </div>
+                </article>
+            </div>
+            <p class="metric-source">Fonte: <a href="https://agenciadenoticias.ibge.gov.br/agencia-sala-de-imprensa/46171-5-edicao-da-pense-meninas-sao-as-maiores-vitimas-de-violencia-sexual.html" target="_blank" rel="noopener noreferrer">IBGE, PeNSE 2024</a>. Dados nacionais, não resultados da EETEPA Vilhena Alves.</p>
         </section>
 
-        <!-- ===== SOBRE O BULLYING ===== -->
-        <section class="section" id="sobre" aria-labelledby="titulo-sobre">
+        <!-- ===== 5. MOTIVOS: por que alguém vira alvo ===== -->
+        <section class="section chapter reasons" id="motivos" aria-labelledby="titulo-motivos">
             <div class="section-heading">
-                <h2 id="titulo-sobre">Reconhecer é o começo da mudança.</h2>
-                <p>Bullying é violência intencional e repetida, com desequilíbrio de poder entre quem agride e quem sofre. No Brasil, a Lei 13.185/2015 criou o Programa de Combate à Intimidação Sistemática. Pode acontecer pessoalmente ou na internet.</p>
+                <p class="kicker">Por quê?</p>
+                <h2 id="titulo-motivos">A aparência é o alvo mais citado. Mas muitos nem sabem o motivo.</h2>
+                <p>Entre estudantes que sofreram bullying, estes foram alguns dos motivos apontados. Selecione uma barra para ler o que o dado revela.</p>
+            </div>
+            <div class="reasons-layout">
+                <div class="reason-bars" id="reasonBars" role="group" aria-label="Motivos do bullying">
+                    <button type="button" class="reason" data-note="rosto" aria-pressed="true" style="--v: 30.2"><span class="reason-label">Aparência do rosto ou do cabelo</span><span class="reason-track"><span></span></span><strong>30,2%</strong></button>
+                    <button type="button" class="reason" data-note="nao-sabe" aria-pressed="false" style="--v: 26.3"><span class="reason-label">Não sabe o motivo</span><span class="reason-track"><span></span></span><strong>26,3%</strong></button>
+                    <button type="button" class="reason" data-note="corpo" aria-pressed="false" style="--v: 24.7"><span class="reason-label">Aparência do corpo</span><span class="reason-track"><span></span></span><strong>24,7%</strong></button>
+                    <button type="button" class="reason" data-note="cor" aria-pressed="false" style="--v: 10.6"><span class="reason-label">Cor da pele ou raça</span><span class="reason-track"><span></span></span><strong>10,6%</strong></button>
+                </div>
+                <div class="reason-notes" aria-live="polite">
+                    <p class="reason-note" data-note-panel="rosto"><strong>Rosto ou cabelo · 30,2%</strong>Comentários sobre o rosto ou o cabelo podem parecer “só brincadeira”. Quando se repetem e humilham, viram violência.</p>
+                    <p class="reason-note" data-note-panel="nao-sabe"><strong>Não sabe · 26,3%</strong>Mais de um quarto de quem sofreu não sabe por que foi escolhido. O bullying não depende de algo “errado” em quem sofre.</p>
+                    <p class="reason-note" data-note-panel="corpo"><strong>Corpo · 24,7%</strong>Piadas sobre o corpo pesam: a satisfação dos adolescentes com a própria imagem caiu de 66,5% em 2019 para 58,0% em 2024.</p>
+                    <p class="reason-note" data-note-panel="cor"><strong>Cor da pele ou raça · 10,6%</strong>Quando o alvo é a cor da pele ou a raça, além de bullying há discriminação. Racismo é crime no Brasil.</p>
+                </div>
+            </div>
+            <p class="metric-source">Fontes: <a href="https://agenciadenoticias.ibge.gov.br/agencia-sala-de-imprensa/46171-5-edicao-da-pense-meninas-sao-as-maiores-vitimas-de-violencia-sexual.html" target="_blank" rel="noopener noreferrer">IBGE, PeNSE 2024</a> e <a href="https://jornaldebrasilia.com.br/noticias/brasil/ibge-4-em-10-adolescentes-sofrem-bullying-na-escola/" target="_blank" rel="noopener noreferrer">Jornal de Brasília</a>. Uma pessoa pode apontar mais de um motivo.</p>
+        </section>
+
+        <!-- ===== 6. RECONHECER: definição + teste interativo ===== -->
+        <section class="section chapter" id="sobre" aria-labelledby="titulo-sobre">
+            <div class="recognize-layout">
+                <div class="section-heading">
+                    <p class="kicker">Capítulo 04 · Reconhecer</p>
+                    <h2 id="titulo-sobre">Reconhecer é o começo da mudança.</h2>
+                    <p>Bullying é violência <strong>intencional</strong> e <strong>repetida</strong>, com <strong>desequilíbrio de poder</strong> entre quem agride e quem sofre. No Brasil, a Lei 13.185/2015 criou o Programa de Combate à Intimidação Sistemática.</p>
+                    <ul class="criteria" aria-label="Três sinais do bullying">
+                        <li><span>1</span>Intencional</li>
+                        <li><span>2</span>Repetido</li>
+                        <li><span>3</span>Desequilíbrio de poder</li>
+                    </ul>
+                </div>
+
+                <div class="quiz" id="quiz">
+                    <div class="quiz-head">
+                        <h3>É bullying ou não?</h3>
+                        <p class="quiz-score" id="quizScore" aria-live="polite">Responda às 4 situações.</p>
+                    </div>
+                    <ol class="quiz-list">
+                        <li class="quiz-item" data-answer="nao">
+                            <p class="quiz-case">Um colega derruba seu lápis sem querer e logo pede desculpas.</p>
+                            <div class="quiz-actions"><button type="button" data-choice="sim">É bullying</button><button type="button" data-choice="nao">Não é</button></div>
+                            <p class="quiz-feedback"><b>Não é bullying.</b> Foi sem intenção e não se repetiu.</p>
+                        </li>
+                        <li class="quiz-item" data-answer="sim">
+                            <p class="quiz-case">Há semanas, um grupo imita o jeito de falar de uma colega e posta vídeos no grupo da turma.</p>
+                            <div class="quiz-actions"><button type="button" data-choice="sim">É bullying</button><button type="button" data-choice="nao">Não é</button></div>
+                            <p class="quiz-feedback"><b>É bullying — e cyberbullying.</b> É intencional, repetido e expõe a colega diante de muitas pessoas.</p>
+                        </li>
+                        <li class="quiz-item" data-answer="nao">
+                            <p class="quiz-case">Dois amigos discutem uma vez sobre futebol e, no dia seguinte, fazem as pazes.</p>
+                            <div class="quiz-actions"><button type="button" data-choice="sim">É bullying</button><button type="button" data-choice="nao">Não é</button></div>
+                            <p class="quiz-feedback"><b>Não é bullying.</b> Foi um conflito pontual entre pessoas em condições iguais. Respeito continua importante.</p>
+                        </li>
+                        <li class="quiz-item" data-answer="sim">
+                            <p class="quiz-case">Todo dia, um estudante mais velho pega o lanche de um mais novo e ameaça contar “para todo mundo”.</p>
+                            <div class="quiz-actions"><button type="button" data-choice="sim">É bullying</button><button type="button" data-choice="nao">Não é</button></div>
+                            <p class="quiz-feedback"><b>É bullying.</b> Tem intenção, repetição e desequilíbrio de poder pela idade e pela ameaça.</p>
+                        </li>
+                    </ol>
+                </div>
             </div>
 
-            <!-- Tipos de bullying em uma lista editorial. -->
             <div class="info-grid">
                 <article class="info-card pesquisavel">
                     <h3>Bullying verbal</h3>
@@ -205,7 +360,7 @@
                 </article>
                 <article class="info-card pesquisavel">
                     <h3>Bullying físico</h3>
-                    <p>Empurrões, socos, chutes ou danos aos pertences de outra pessoa.</p>
+                    <p>Empurrões, socos, chutes ou danos aos pertences. 16,6% dos estudantes disseram ter sido agredidos fisicamente por colegas.</p>
                 </article>
                 <article class="info-card pesquisavel">
                     <h3>Cyberbullying</h3>
@@ -214,105 +369,142 @@
             </div>
         </section>
 
-        <!-- ===== DENÚNCIA ANÔNIMA ===== -->
-        <section class="section" id="dicas" aria-labelledby="titulo-dicas">
-            <div class="section-heading">
-                <h2 id="titulo-dicas">O que podemos fazer hoje?</h2>
-                <p>Pequenas atitudes constroem uma escola mais respeitosa e acolhedora.</p>
-            </div>
+        <!-- ===== 7. COMO AGIR: orientações por situação ===== -->
+        <section class="section chapter" id="dicas" aria-labelledby="titulo-dicas">
+            <div class="act-layout">
+                <div class="section-heading">
+                    <p class="kicker">Capítulo 05 · Agir</p>
+                    <h2 id="titulo-dicas">O que podemos fazer hoje?</h2>
+                    <p>A resposta depende de onde você está nessa história. Escolha a situação que mais se parece com a sua.</p>
+                    <div class="act-tabs" id="actTabs" role="tablist" aria-label="Situação" hidden>
+                        <button type="button" role="tab" id="tab-sofri" aria-controls="painel-sofri" aria-selected="true">Está acontecendo comigo</button>
+                        <button type="button" role="tab" id="tab-vi" aria-controls="painel-vi" aria-selected="false" tabindex="-1">Eu presenciei</button>
+                        <button type="button" role="tab" id="tab-pratiquei" aria-controls="painel-pratiquei" aria-selected="false" tabindex="-1">Eu pratiquei</button>
+                    </div>
+                </div>
 
-            <!-- Lista numerada (<ol>), pois as dicas formam uma sequência.
-                 Para adicionar uma dica, copie um <li> e troque o número -->
-            <ol class="tips-grid">
-                <li class="tip pesquisavel"><span class="tip-number" aria-hidden="true">1</span><div><h3>Não incentive</h3><p>Não compartilhe apelidos ofensivos, humilhações, imagens ou mensagens que exponham alguém.</p></div></li>
-                <li class="tip pesquisavel"><span class="tip-number" aria-hidden="true">2</span><div><h3>Acolha quem precisa</h3><p>Escute sem julgar e mostre que a pessoa não está sozinha.</p></div></li>
-                <li class="tip pesquisavel"><span class="tip-number" aria-hidden="true">3</span><div><h3>Procure um adulto de confiança</h3><p>Converse com um professor, responsável ou com a equipe pedagógica.</p></div></li>
-                <li class="tip pesquisavel"><span class="tip-number" aria-hidden="true">4</span><div><h3>Pratique o respeito</h3><p>Valorize as diferenças e construa relações baseadas em empatia e diálogo.</p></div></li>
-            </ol>
+                <div class="act-panels">
+                    <div class="act-panel" id="painel-sofri" role="tabpanel" aria-labelledby="tab-sofri">
+                        <h3 class="act-title">Se está acontecendo com você</h3>
+                        <ol class="tips-grid">
+                            <li class="tip pesquisavel"><span class="tip-number" aria-hidden="true">1</span><div><h4>A culpa não é sua</h4><p>Ninguém merece ser humilhado, seja qual for a aparência, o jeito ou a origem.</p></div></li>
+                            <li class="tip pesquisavel"><span class="tip-number" aria-hidden="true">2</span><div><h4>Guarde registros</h4><p>Anote datas e lugares e faça capturas de tela, sem responder às provocações.</p></div></li>
+                            <li class="tip pesquisavel"><span class="tip-number" aria-hidden="true">3</span><div><h4>Procure um adulto de confiança</h4><p>Converse com um professor, responsável ou com a equipe pedagógica.</p></div></li>
+                        </ol>
+                    </div>
+                    <div class="act-panel" id="painel-vi" role="tabpanel" aria-labelledby="tab-vi">
+                        <h3 class="act-title">Se você presenciou</h3>
+                        <ol class="tips-grid">
+                            <li class="tip pesquisavel"><span class="tip-number" aria-hidden="true">1</span><div><h4>Não incentive</h4><p>Não ria, não curta e não compartilhe apelidos, imagens ou mensagens que exponham alguém.</p></div></li>
+                            <li class="tip pesquisavel"><span class="tip-number" aria-hidden="true">2</span><div><h4>Acolha quem precisa</h4><p>Escute sem julgar e mostre que a pessoa não está sozinha.</p></div></li>
+                            <li class="tip pesquisavel"><span class="tip-number" aria-hidden="true">3</span><div><h4>Avise e relate</h4><p>Conte a um adulto da escola ou use o formulário anônimo desta página.</p></div></li>
+                        </ol>
+                    </div>
+                    <div class="act-panel" id="painel-pratiquei" role="tabpanel" aria-labelledby="tab-pratiquei">
+                        <h3 class="act-title">Se você praticou</h3>
+                        <ol class="tips-grid">
+                            <li class="tip pesquisavel"><span class="tip-number" aria-hidden="true">1</span><div><h4>Pare e reconheça</h4><p>Pense no efeito do que foi dito ou feito, mesmo que tenha parecido brincadeira.</p></div></li>
+                            <li class="tip pesquisavel"><span class="tip-number" aria-hidden="true">2</span><div><h4>Repare o dano</h4><p>Peça desculpas sem minimizar e apague o que expôs a outra pessoa.</p></div></li>
+                            <li class="tip pesquisavel"><span class="tip-number" aria-hidden="true">3</span><div><h4>Pratique o respeito</h4><p>Converse com um adulto de confiança. Mudar de atitude é possível.</p></div></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
         </section>
 
-        <section class="section highlight" id="denuncia" aria-labelledby="titulo-denuncia">
-            <div class="section-heading">
-                <h2 id="titulo-denuncia">Relate o que aconteceu</h2>
-                <p>Você pode descrever uma situação sem informar seu nome. Um relato ajuda a identificar o que precisa de atenção, mas não substitui ajuda imediata em caso de perigo.</p>
+        <!-- ===== 8. RELATO ANÔNIMO ===== -->
+        <section class="section chapter highlight" id="denuncia" aria-labelledby="titulo-denuncia">
+            <div class="report-layout">
+                <div class="report-aside">
+                    <p class="kicker">Relato anônimo</p>
+                    <h2 id="titulo-denuncia">Relate o que aconteceu</h2>
+                    <p>Você pode descrever uma situação sem informar seu nome. Um relato ajuda a identificar o que precisa de atenção, mas não substitui ajuda imediata em caso de perigo.</p>
+                    <div class="form-intro">
+                        <strong>Antes de escrever</strong>
+                        <p>Conte apenas o necessário. Evite nomes completos, telefones, endereços e imagens de outras pessoas. Se alguém estiver em risco agora, procure um adulto da escola ou ligue 190.</p>
+                    </div>
+                    <ol class="report-steps" aria-label="O que acontece com o relato">
+                        <li><span>1</span>Você responde sem nome nem contato.</li>
+                        <li><span>2</span>O texto é guardado em uma área privada do projeto.</li>
+                        <li><span>3</span>Os relatos ajudam a orientar ações de prevenção.</li>
+                    </ol>
+                </div>
+
+                <form id="reportForm" class="report-form" novalidate>
+                    <div class="form-progress" aria-hidden="true"><span id="formProgressBar"></span></div>
+                    <p class="form-progress-text" id="formProgressText" aria-hidden="true">0 de 5 itens preenchidos</p>
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label for="reportRole">O que melhor descreve sua situação? <span>*</span></label>
+                            <select id="reportRole" name="papel" required>
+                                <option value="">Selecione uma opção</option>
+                                <option value="sofri">Aconteceu comigo</option>
+                                <option value="vi">Presenciei</option>
+                                <option value="soube">Soube de um caso</option>
+                            </select>
+                        </div>
+                        <div class="form-field">
+                            <label for="reportPlace">Onde aconteceu? <span>*</span></label>
+                            <select id="reportPlace" name="local" required>
+                                <option value="">Selecione uma opção</option>
+                                <option value="sala">Na sala de aula</option>
+                                <option value="outro-local-escola">Em outro espaço da escola</option>
+                                <option value="online">Na internet</option>
+                                <option value="outro">Em outro lugar</option>
+                            </select>
+                        </div>
+                        <div class="form-field">
+                            <label for="reportWhen">Quando aconteceu? <span>*</span></label>
+                            <select id="reportWhen" name="quando" required>
+                                <option value="">Selecione uma opção</option>
+                                <option value="hoje">Hoje</option>
+                                <option value="esta-semana">Nesta semana</option>
+                                <option value="antes">Há mais tempo</option>
+                                <option value="nao-sei">Não sei informar</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-field">
+                        <label for="reportDescription">O que aconteceu? <span>*</span></label>
+                        <textarea id="reportDescription" name="descricao" rows="6" maxlength="2000" minlength="20" required placeholder="Descreva os fatos, sem colocar nomes completos ou contatos." aria-describedby="reportHint reportCounter"></textarea>
+                        <small id="reportHint">Entre 20 e 2.000 caracteres. Não inclua dados que identifiquem outras pessoas.</small>
+                        <small class="char-counter" id="reportCounter" aria-live="polite">0 / 2.000</small>
+                    </div>
+                    <label class="form-check"><input type="checkbox" id="reportConfirm" required> Entendi que este canal não é para emergências e revisei meu texto para evitar dados pessoais.</label>
+                    <button class="btn btn-primary" type="submit" id="reportSubmit">Enviar relato anônimo <span aria-hidden="true">↗</span></button>
+                    <p class="form-status" id="reportStatus" role="status" aria-live="polite">O relato será guardado na área privada do projeto, sem campos de nome ou contato.</p>
+                </form>
             </div>
-            <div class="form-intro">
-                <strong>Antes de escrever</strong>
-                <p>Conte apenas o necessário. Evite nomes completos, telefones, endereços e imagens de outras pessoas. Se alguém estiver em risco agora, procure um adulto da escola ou ligue 190.</p>
-            </div>
-            <form id="reportForm" class="report-form" novalidate>
-                <div class="form-field">
-                    <label for="reportRole">O que melhor descreve sua situação? <span>*</span></label>
-                    <select id="reportRole" name="papel" required>
-                        <option value="">Selecione uma opção</option>
-                        <option value="sofri">Aconteceu comigo</option>
-                        <option value="vi">Presenciei</option>
-                        <option value="soube">Soube de um caso</option>
-                    </select>
-                </div>
-                <div class="form-field">
-                    <label for="reportPlace">Onde aconteceu? <span>*</span></label>
-                    <select id="reportPlace" name="local" required>
-                        <option value="">Selecione uma opção</option>
-                        <option value="sala">Na sala de aula</option>
-                        <option value="outro-local-escola">Em outro espaço da escola</option>
-                        <option value="online">Na internet</option>
-                        <option value="outro">Em outro lugar</option>
-                    </select>
-                </div>
-                <div class="form-field">
-                    <label for="reportWhen">Quando aconteceu? <span>*</span></label>
-                    <select id="reportWhen" name="quando" required>
-                        <option value="">Selecione uma opção</option>
-                        <option value="hoje">Hoje</option>
-                        <option value="esta-semana">Nesta semana</option>
-                        <option value="antes">Há mais tempo</option>
-                        <option value="nao-sei">Não sei informar</option>
-                    </select>
-                </div>
-                <div class="form-field">
-                    <label for="reportDescription">O que aconteceu? <span>*</span></label>
-                    <textarea id="reportDescription" name="descricao" rows="6" maxlength="2000" minlength="20" required placeholder="Descreva os fatos, sem colocar nomes completos ou contatos."></textarea>
-                    <small>Entre 20 e 2.000 caracteres. Não inclua dados que identifiquem outras pessoas.</small>
-                </div>
-                <label class="form-check"><input type="checkbox" id="reportConfirm" required> Entendi que este canal não é para emergências e revisei meu texto para evitar dados pessoais.</label>
-                <button class="btn btn-primary" type="submit" id="reportSubmit">Enviar relato anônimo <span aria-hidden="true">↗</span></button>
-                <p class="form-status" id="reportStatus" role="status" aria-live="polite">O relato será guardado na área privada do projeto, sem campos de nome ou contato.</p>
-            </form>
         </section>
 
-        <!-- ===== ÁREA DE AJUDA ===== -->
-        <section class="section" id="ajuda" aria-labelledby="titulo-ajuda">
+        <!-- ===== 9. AJUDA ===== -->
+        <section class="section chapter" id="ajuda" aria-labelledby="titulo-ajuda">
             <div class="help-banner">
-                <h2 id="titulo-ajuda">Você não precisa enfrentar isso sozinho.</h2>
-                <p>Procure um professor, a coordenação ou outro profissional de confiança da escola. Estes serviços também ajudam:</p>
-
-                <!-- Telefones úteis -->
+                <div>
+                    <h2 id="titulo-ajuda">Você não precisa enfrentar isso sozinho.</h2>
+                    <p>Procure um professor, a coordenação ou outro profissional de confiança da escola. Estes serviços também ajudam:</p>
+                    <a class="btn btn-primary" href="#inicio">Voltar ao início</a>
+                </div>
                 <ul class="contacts">
                     <li class="pesquisavel"><a class="contact-number" href="tel:190" aria-label="Ligar para a Polícia Militar, 190">190</a>Polícia Militar, em risco imediato</li>
                     <li class="pesquisavel"><a class="contact-number" href="tel:100" aria-label="Ligar para o Disque Direitos Humanos, 100">100</a>Disque Direitos Humanos, para denunciar violações contra crianças e adolescentes</li>
                     <li class="pesquisavel"><a class="contact-number" href="tel:188" aria-label="Ligar para o CVV, 188">188</a>CVV, apoio emocional 24 horas</li>
-                    <li class="pesquisavel"><strong>Conselho Tutelar</strong> procure o da sua cidade</li>
+                    <li class="pesquisavel"><strong>Conselho Tutelar</strong>Procure o da sua cidade</li>
                 </ul>
-
-                <a class="btn btn-primary" href="#inicio">Voltar ao início</a>
             </div>
         </section>
 
-        <!-- Mensagem mostrada quando a pesquisa não encontra nada (o JS controla) -->
         <p class="no-results" id="noResults" hidden>Nenhum resultado encontrado. Tente outra palavra.</p>
     </main>
 
-    <!-- ========== RODAPÉ ========== -->
     <footer>
-    <strong>EETEPA Vilhena Alves — Contra o Bullying</strong>
-    <p>Projeto educativo de conscientização e prevenção ao bullying.</p>
-    <p class="small-note">Protótipo desenvolvido para a feira de ciências.</p>
-    <p class="small-note1">Trabalho desenvolvido pela turma de Ciência de Dados.</p>
-</footer>
+        <strong>EETEPA Vilhena Alves — Contra o Bullying</strong>
+        <p>Projeto educativo de conscientização e prevenção ao bullying.</p>
+        <p class="small-note">Protótipo desenvolvido para a feira de ciências. Dados nacionais da PeNSE 2024 (IBGE).</p>
+        <p class="small-note1">Trabalho desenvolvido pela turma de Ciência de Dados.</p>
+    </footer>
 
-    <!-- Conecta o JavaScript (fica no final para carregar depois do HTML) -->
-    <script src="script.js"></script>
-    <script type="module" src="data-viz.js"></script>
+    <script src="script.js?v=story-20261117"></script>
+    <script type="module" src="data-viz.js?v=story-20261117"></script>
 </body>
 </html>
