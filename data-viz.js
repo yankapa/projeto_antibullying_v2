@@ -108,60 +108,51 @@ function computeTargets(step, portrait) {
   return { pos, col, labels, bounds };
 }
 
-/* Motor de animação: guarda posição/cor atuais e interpola até o destino. */
-function createEngine() {
-  const cur = new Float32Array(TOTAL * 3);
-  const from = new Float32Array(TOTAL * 3);
-  const to = new Float32Array(TOTAL * 3);
-  const cCur = new Float32Array(TOTAL * 3);
-  const cFrom = new Float32Array(TOTAL * 3);
-  const cTo = new Float32Array(TOTAL * 3);
-  const delay = new Float32Array(TOTAL);
-  const rgb = {};
-  for (const [k, hex] of Object.entries(COLORS)) {
-    const v = parseInt(hex.slice(1), 16);
-    rgb[k] = [(v >> 16 & 255) / 255, (v >> 8 & 255) / 255, (v & 255) / 255];
-  }
-  let start = 0, running = false, first = true;
-  const DUR = 650, SPREAD = 550;
+/* Cores em RGB (0 a 1) para misturar sem converter texto a cada quadro. */
+const RGB = {};
+for (const [k, hex] of Object.entries(COLORS)) {
+  const v = parseInt(hex.slice(1), 16);
+  RGB[k] = [(v >> 16 & 255) / 255, (v >> 8 & 255) / 255, (v & 255) / 255];
+}
+/* Converte o destino de um passo em listas de números prontas para misturar. */
+function bake(step, portrait) {
+  const t = computeTargets(step, portrait);
+  const col = new Float32Array(TOTAL * 3);
+  for (let i = 0; i < TOTAL; i++) col.set(RGB[t.col[i]], i * 3);
+  return { pos: t.pos, col, labels: t.labels, bounds: t.bounds };
+}
 
+/* A animação acompanha a rolagem: entre dois passos, cada ponto anda
+   uma fração proporcional ao quanto a página rolou (com um pequeno atraso
+   por ponto, que cria a "onda"). Rolar para cima desfaz o movimento. */
+const STAGGER = 0.35;
+const delayOf = new Float32Array(TOTAL);
+for (let i = 0; i < TOTAL; i++) delayOf[i] = (rankOf[i] / TOTAL) * STAGGER;
+const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
+
+function createScrubber() {
+  const cur = new Float32Array(TOTAL * 3);
+  const cCur = new Float32Array(TOTAL * 3);
   return {
     cur, cCur,
-    setTarget(t) {
-      from.set(cur); cFrom.set(cCur);
+    blend(A, B, f) {
       for (let i = 0; i < TOTAL; i++) {
-        to[i * 3] = t.pos[i * 3]; to[i * 3 + 1] = t.pos[i * 3 + 1]; to[i * 3 + 2] = t.pos[i * 3 + 2];
-        const c = rgb[t.col[i]];
-        cTo[i * 3] = c[0]; cTo[i * 3 + 1] = c[1]; cTo[i * 3 + 2] = c[2];
-        delay[i] = (rankOf[i] / TOTAL) * SPREAD;
-      }
-      if (first || reducedMotion) { cur.set(to); cCur.set(cTo); first = false; running = false; return; }
-      start = performance.now(); running = true;
-    },
-    /* Retorna true enquanto ainda há movimento. */
-    update(now) {
-      if (!running) return false;
-      let moving = false;
-      for (let i = 0; i < TOTAL; i++) {
-        let t = (now - start - delay[i]) / DUR;
-        if (t < 1) moving = true;
-        t = Math.max(0, Math.min(1, t));
-        const e = t < .5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2;
+        const t = Math.min(1, Math.max(0, (f - delayOf[i]) / (1 - STAGGER)));
+        const e = easeInOut(t);
+        const tc = Math.min(1, t * 1.4);
         for (let k = 0; k < 3; k++) {
           const j = i * 3 + k;
-          cur[j] = from[j] + (to[j] - from[j]) * e;
-          cCur[j] = cFrom[j] + (cTo[j] - cFrom[j]) * Math.min(1, t * 1.6);
+          cur[j] = A.pos[j] + (B.pos[j] - A.pos[j]) * e;
+          cCur[j] = A.col[j] + (B.col[j] - A.col[j]) * tc;
         }
       }
-      running = moving;
-      return true;
     },
   };
 }
 
 /* Câmera: enquadra o conteúdo na proporção do palco. */
 function fitView(bounds, aspect) {
-  const margin = 1.12;
+  const margin = 1.08;
   let w = bounds.w * margin, h = bounds.h * margin;
   if (w / h > aspect) h = w / aspect; else w = h * aspect;
   return { w, h };
@@ -170,9 +161,9 @@ function fitView(bounds, aspect) {
 /* Renderizador 3D com Three.js (InstancedMesh: 1.000 cubos em uma chamada). */
 async function createThreeRenderer(container, engine) {
   const THREE = await import("./assets/vendor/three/three.module.js");
-  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: "low-power" });
+  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
   if (!renderer.getContext()) throw new Error("WebGL indisponível");
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
   const scene = new THREE.Scene();
   const camera = new THREE.OrthographicCamera(-20, 20, 13, -13, 0.1, 200);
   camera.position.set(0, 0, 80);
@@ -182,56 +173,45 @@ async function createThreeRenderer(container, engine) {
   scene.add(sun);
   const group = new THREE.Group();
   scene.add(group);
-  const mesh = new THREE.InstancedMesh(
-    new THREE.BoxGeometry(0.74, 0.74, 0.5),
-    new THREE.MeshLambertMaterial({ color: 0xffffff }),
-    TOTAL
-  );
+  const mesh = new THREE.InstancedMesh(new THREE.BoxGeometry(0.74, 0.74, 0.5), new THREE.MeshLambertMaterial({ color: 0xffffff }), TOTAL);
   mesh.setColorAt(0, new THREE.Color());
+  mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
   group.add(mesh);
-  const dummy = new THREE.Object3D();
+  const m = mesh.instanceMatrix.array;
+  const c = mesh.instanceColor.array;
   const color = new THREE.Color();
-  let view = { w: 44, h: 28 }, rotX = -0.12, rotY = 0.18, tX = rotX, tY = rotY;
-
+  let view = { w: 44, h: 28 }, W = 1, H = 1;
+  let rotX = -0.12, rotY = 0.18, tX = rotX, tY = rotY;
+  group.rotation.set(rotX, rotY, 0);
   container.replaceChildren(renderer.domElement);
-  if (!reducedMotion) {
-    container.addEventListener("pointermove", (ev) => {
-      if (ev.pointerType !== "mouse") return;
-      const b = container.getBoundingClientRect();
-      tY = 0.18 + ((ev.clientX - b.left) / b.width - 0.5) * 0.5;
-      tX = -0.12 + ((ev.clientY - b.top) / b.height - 0.5) * 0.3;
-      api.kick();
-    });
-    container.addEventListener("pointerleave", () => { tX = -0.12; tY = 0.18; api.kick(); });
-  }
 
   const api = {
     kind: "webgl",
-    kick: () => {},
-    setBounds(bounds) {
+    onTilt: () => {},
+    resize() {
       const r = container.getBoundingClientRect();
-      if (!r.width || !r.height) return;
-      renderer.setSize(r.width, r.height, false);
-      view = fitView(bounds, r.width / r.height);
+      W = r.width; H = r.height;
+      if (W && H) renderer.setSize(W, H, false);
+    },
+    setView(bounds) {
+      if (!W || !H) return;
+      view = fitView(bounds, W / H);
       camera.left = -view.w / 2; camera.right = view.w / 2;
       camera.top = view.h / 2; camera.bottom = -view.h / 2;
       camera.updateProjectionMatrix();
     },
-    toScreen(x, y) {
-      const r = container.getBoundingClientRect();
-      return [(x / view.w + 0.5) * r.width, (0.5 - y / view.h) * r.height];
-    },
+    toScreen(x, y) { return [(x / view.w + 0.5) * W, (0.5 - y / view.h) * H]; },
+    /* Escreve direto nas matrizes (mais rápido do que um objeto por cubo). */
     draw() {
       group.rotation.x += (tX - group.rotation.x) * 0.12;
       group.rotation.y += (tY - group.rotation.y) * 0.12;
+      const p = engine.cur, k = engine.cCur;
       for (let i = 0; i < TOTAL; i++) {
-        const z = engine.cur[i * 3 + 2];
-        dummy.position.set(engine.cur[i * 3], engine.cur[i * 3 + 1], z);
-        dummy.scale.set(1, 1, 1 + z * 1.6);
-        dummy.updateMatrix();
-        mesh.setMatrixAt(i, dummy.matrix);
-        color.setRGB(engine.cCur[i * 3], engine.cCur[i * 3 + 1], engine.cCur[i * 3 + 2], THREE.SRGBColorSpace);
-        mesh.setColorAt(i, color);
+        const o = i * 16, z = p[i * 3 + 2];
+        m[o] = 1; m[o + 5] = 1; m[o + 10] = 1 + z * 1.6; m[o + 15] = 1;
+        m[o + 12] = p[i * 3]; m[o + 13] = p[i * 3 + 1]; m[o + 14] = z;
+        color.setRGB(k[i * 3], k[i * 3 + 1], k[i * 3 + 2], THREE.SRGBColorSpace);
+        c[i * 3] = color.r; c[i * 3 + 1] = color.g; c[i * 3 + 2] = color.b;
       }
       mesh.instanceMatrix.needsUpdate = true;
       mesh.instanceColor.needsUpdate = true;
@@ -239,6 +219,16 @@ async function createThreeRenderer(container, engine) {
       return Math.abs(tX - group.rotation.x) > 0.0005 || Math.abs(tY - group.rotation.y) > 0.0005;
     },
   };
+  if (!reducedMotion) {
+    container.addEventListener("pointermove", (ev) => {
+      if (ev.pointerType !== "mouse") return;
+      const b = container.getBoundingClientRect();
+      tY = 0.18 + ((ev.clientX - b.left) / b.width - 0.5) * 0.5;
+      tX = -0.12 + ((ev.clientY - b.top) / b.height - 0.5) * 0.3;
+      api.onTilt();
+    });
+    container.addEventListener("pointerleave", () => { tX = -0.12; tY = 0.18; api.onTilt(); });
+  }
   return api;
 }
 
@@ -248,78 +238,88 @@ function createCanvasRenderer(container, engine) {
   const ctx = canvas.getContext("2d");
   container.replaceChildren(canvas);
   let view = { w: 44, h: 28 }, W = 1, H = 1, dpr = 1;
-  return {
+  const api = {
     kind: "2d",
-    kick: () => {},
-    setBounds(bounds) {
+    onTilt: () => {},
+    resize() {
       const r = container.getBoundingClientRect();
-      if (!r.width || !r.height) return;
       dpr = Math.min(window.devicePixelRatio || 1, 2);
       W = r.width; H = r.height;
       canvas.width = W * dpr; canvas.height = H * dpr;
-      view = fitView(bounds, W / H);
     },
+    setView(bounds) { if (W && H) view = fitView(bounds, W / H); },
     toScreen(x, y) { return [(x / view.w + 0.5) * W, (0.5 - y / view.h) * H]; },
     draw() {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, W, H);
-      const s = W / view.w;
-      const size = s * 0.74;
+      const size = (W / view.w) * 0.74;
+      const p = engine.cur, k = engine.cCur;
       for (let i = 0; i < TOTAL; i++) {
-        const [sx, sy] = this.toScreen(engine.cur[i * 3], engine.cur[i * 3 + 1]);
-        const c = engine.cCur;
-        ctx.fillStyle = `rgb(${c[i * 3] * 255 | 0},${c[i * 3 + 1] * 255 | 0},${c[i * 3 + 2] * 255 | 0})`;
+        const [sx, sy] = api.toScreen(p[i * 3], p[i * 3 + 1]);
+        ctx.fillStyle = `rgb(${k[i * 3] * 255 | 0},${k[i * 3 + 1] * 255 | 0},${k[i * 3 + 2] * 255 | 0})`;
         ctx.fillRect(sx - size / 2, sy - size / 2, size, size);
       }
       return false;
     },
   };
+  return api;
 }
 
 function initStory() {
+  const section = document.querySelector("#dados");
   const container = document.querySelector("#storyCanvas");
   const stage = document.querySelector(".story-stage");
   const steps = [...document.querySelectorAll(".story-step")];
+  const cards = steps.map((s) => s.querySelector(".step-card") || s);
   const hudCount = document.querySelector("#storyCount");
   const hudText = document.querySelector("#storyHudText");
   const legend = document.querySelector("#storyLegend");
   const labelsBox = document.querySelector("#storyLabels");
   if (!container || !steps.length) return;
 
-  const engine = createEngine();
-  let renderer = null, current = "intro", targets = null, frame = 0, lastHud = 1000;
-  const isPortrait = () => { const r = stage.getBoundingClientRect(); return r.width / Math.max(r.height, 1) < 0.95; };
+  const names = steps.map((s) => s.dataset.step);
+  const engine = createScrubber();
+  let renderer = null, baked = [], portrait = null;
+  let centers = [], anchor = 0.5;          // posição de cada cartão na página
+  let progress = 0, drawn = -1, shown = -1, lastHud = 1000;
+  let frame = 0, tilting = false;
 
-  function placeLabels() {
-    labelsBox.replaceChildren();
-    if (!renderer || !targets) return;
-    for (const [x, y, html] of targets.labels) {
-      const el = document.createElement("span");
-      el.className = "story-label";
-      el.innerHTML = html;
-      const [sx, sy] = renderer.toScreen(x, y);
-      el.style.left = sx + "px"; el.style.top = sy + "px";
-      labelsBox.append(el);
-      requestAnimationFrame(() => el.classList.add("is-on"));
-    }
+  const isPortrait = () => { const r = container.getBoundingClientRect(); return r.width / Math.max(r.height, 1) < 0.95; };
+
+  /* Mede a página só quando o tamanho muda — nunca durante a rolagem. */
+  function measure() {
+    const narrow = window.matchMedia("(max-width: 1099px)").matches || document.body.classList.contains("large-text");
+    anchor = narrow ? 0.76 : 0.5;
+    centers = cards.map((c) => { const r = c.getBoundingClientRect(); return r.top + window.scrollY + r.height / 2; });
+    if (!renderer) return;
+    renderer.resize();
+    const p = isPortrait();
+    if (p !== portrait) { portrait = p; baked = names.map((n) => bake(STEPS[n], p)); }
+    shown = -1; drawn = -1;
+    schedule();
   }
 
-  function loop(now) {
-    const moving = engine.update(now);
-    const turning = renderer.draw();
-    frame = moving || turning ? requestAnimationFrame(loop) : 0;
+  /* Rolagem -> número contínuo: 0 = 1º passo, 1 = 2º passo, 2,5 = metade do caminho entre o 3º e o 4º. */
+  function readProgress() {
+    const y = window.scrollY + window.innerHeight * anchor;
+    if (y <= centers[0]) return 0;
+    const last = centers.length - 1;
+    if (y >= centers[last]) return last;
+    let i = 0;
+    while (y > centers[i + 1]) i++;
+    let f = (y - centers[i]) / (centers[i + 1] - centers[i]);
+    f = Math.min(1, Math.max(0, (f - 0.2) / 0.6));   // o desenho "segura" perto de cada cartão
+    if (reducedMotion) f = f < 0.5 ? 0 : 1;
+    return i + f;
   }
-  function kick() { if (renderer && !frame) frame = requestAnimationFrame(loop); }
 
-  function apply(name, force = false) {
-    if (name === current && !force) return;
-    current = name;
-    const step = STEPS[name];
-    targets = computeTargets(step, isPortrait());
-    engine.setTarget(targets);
-    if (renderer) { renderer.setBounds(targets.bounds); placeLabels(); kick(); }
+  function showStep(idx) {
+    if (idx === shown) return;
+    shown = idx;
+    const step = STEPS[names[idx]];
+    steps.forEach((s, i) => s.classList.toggle("is-active", i === idx));
     const [n, text] = step.hud;
-    tweenNumber(hudCount, name === "trend" ? 0 : lastHud, n, { duration: 700, prefix: step.hudPrefix || "" });
+    tweenNumber(hudCount, names[idx] === "trend" ? 0 : lastHud, n, { duration: 500, prefix: step.hudPrefix || "" });
     lastHud = n;
     hudText.textContent = text;
     legend.replaceChildren(...step.legend.map(([c, label]) => {
@@ -327,37 +327,57 @@ function initStory() {
       li.innerHTML = `<i style="--c:${COLORS[c]}"></i>${label}`;
       return li;
     }));
+    labelsBox.replaceChildren(...(baked[idx]?.labels || []).map(([x, y, html]) => {
+      const el = document.createElement("span");
+      el.className = "story-label";
+      el.innerHTML = html;
+      el.dataset.x = x; el.dataset.y = y;
+      return el;
+    }));
   }
 
-  /* Passo ativo: o que cruza a faixa central da tela. */
-  const setActive = (el) => {
-    steps.forEach((s) => s.classList.toggle("is-active", s === el));
-    apply(el.dataset.step);
-  };
-  steps[0].classList.add("is-active");
-  /* No celular a visualização fica no alto; o passo ativo é o cartão que passa na parte de baixo da tela. */
-  const narrow = window.matchMedia("(max-width: 1099px)").matches || document.body.classList.contains("large-text");
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((e) => { if (e.isIntersecting) setActive(e.target.closest(".story-step")); });
-  }, { rootMargin: narrow ? "-68% 0px -18% 0px" : "-45% 0px -45% 0px" });
-  steps.forEach((s) => io.observe(s.querySelector(".step-card") || s));
+  function render() {
+    frame = 0;
+    if (!renderer || !baked.length) return;
+    progress = readProgress();
+    const i = Math.min(Math.floor(progress), baked.length - 1);
+    const f = progress - i;
+    const A = baked[i], B = baked[Math.min(i + 1, baked.length - 1)];
+    if (progress !== drawn) {
+      engine.blend(A, B, f);
+      renderer.setView({ w: A.bounds.w + (B.bounds.w - A.bounds.w) * f, h: A.bounds.h + (B.bounds.h - A.bounds.h) * f });
+      drawn = progress;
+      showStep(Math.round(progress));
+      for (const el of labelsBox.children) {
+        const [sx, sy] = renderer.toScreen(Number(el.dataset.x), Number(el.dataset.y));
+        el.style.transform = `translate(${sx}px, ${sy}px) translate(-50%, -50%)`;
+        el.classList.toggle("is-on", Math.abs(progress - Math.round(progress)) < 0.2);
+      }
+    }
+    tilting = renderer.draw();
+    if (tilting) schedule();
+  }
+  function schedule() { if (!frame) frame = requestAnimationFrame(render); }
+
+  /* Só reage à rolagem enquanto a seção da história está na tela. */
+  let visible = false;
+  new IntersectionObserver((e) => { visible = e[0].isIntersecting; if (visible) schedule(); }, { rootMargin: "200px" }).observe(section);
+  window.addEventListener("scroll", () => { if (visible) schedule(); }, { passive: true });
 
   async function start() {
     try { renderer = await createThreeRenderer(container, engine); }
     catch (err) { console.warn("WebGL indisponível; usando 2D.", err); renderer = createCanvasRenderer(container, engine); }
     stage.dataset.renderer = renderer.kind;
-    renderer.kick = kick;
-    apply(current, true);
-    let resizeTimer = 0;
-    const onResize = () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(() => apply(current, true), 120);
-    };
-    if ("ResizeObserver" in window) new ResizeObserver(onResize).observe(container);
-    else window.addEventListener("resize", onResize, { passive: true });
+    renderer.onTilt = schedule;
+    measure();
+    let t = 0;
+    const later = () => { clearTimeout(t); t = setTimeout(measure, 120); };
+    if ("ResizeObserver" in window) { const ro = new ResizeObserver(later); ro.observe(container); ro.observe(document.querySelector("#storySteps")); }
+    window.addEventListener("resize", later, { passive: true });
+    document.fonts?.ready.then(measure);
   }
-  whenVisible(document.querySelector("#dados"), start, "600px", 0);
-  apply("intro", true);
+  showStep(0);
+  whenVisible(section, start, "600px", 0);
 }
 initStory();
 

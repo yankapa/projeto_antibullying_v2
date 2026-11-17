@@ -136,15 +136,10 @@ h2, h3, h4 { text-wrap: balance; }
   position: sticky; top: 0; z-index: 30;
   background: rgba(247, 244, 237, .97);
   border-bottom: 1px solid var(--line);
-  backdrop-filter: blur(6px);
 }
 .nav { min-height: var(--chrome); display: flex; align-items: center; gap: 1.4rem; }
 .brand { display: inline-flex; align-items: center; gap: .75rem; flex: 0 0 auto; text-decoration: none; line-height: 1.15; font-size: .9rem; font-weight: 600; }
-.brand-mark {
-  display: grid; place-items: center; flex: 0 0 2.45rem; height: 2.45rem;
-  background: var(--green); color: var(--paper); border-radius: 50%;
-  font: 700 1.45rem/1 var(--serif);
-}
+.brand-mark { display: block; flex: 0 0 2.75rem; width: 2.75rem; height: 2.75rem; border-radius: 22%; }
 .brand strong { display: block; font-weight: 700; }
 .brand small { display: block; margin-top: .3rem; color: var(--muted); font-size: .67rem; font-weight: 500; letter-spacing: .01em; }
 .nav-links { display: flex; justify-content: flex-end; align-items: center; gap: clamp(.7rem, 1.3vw, 1.5rem); flex: 1; }
@@ -252,12 +247,12 @@ h2, h3, h4 { text-wrap: balance; }
   background: radial-gradient(ellipse at 50% 40%, #21504a 0%, var(--green-dark) 70%);
   border-block: 1px solid #3f645d;
 }
-.story-canvas { position: absolute; inset: 0; display: grid; place-items: center; overflow: hidden; touch-action: pan-y; }
+.story-canvas { position: absolute; inset: 0; contain: strict; display: grid; place-items: center; overflow: hidden; touch-action: pan-y; }
 .story-canvas canvas { display: block; width: 100%; height: 100%; }
 .scene-fallback { max-width: 37ch; padding: 1rem; color: #d3e0d8; font-size: .9rem; text-align: center; }
 .story-labels { position: absolute; inset: 0; pointer-events: none; }
 .story-label {
-  position: absolute; transform: translate(-50%, -50%); white-space: nowrap;
+  position: absolute; left: 0; top: 0; white-space: nowrap; will-change: transform;
   padding: .25rem .7rem; border-radius: 999px; background: rgba(23, 55, 52, .85);
   color: #fff; font-size: .85rem; font-weight: 700; opacity: 0; transition: opacity .4s ease;
 }
@@ -523,6 +518,7 @@ footer p:last-child { margin-bottom: 0; }
   body:not(.large-text) .story-body { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, .7fr); gap: clamp(2rem, 4vw, 5rem); align-items: start; }
   body:not(.large-text) .story-stage { height: calc(100svh - var(--chrome) - 2rem); top: calc(var(--chrome) + 1rem); border: 1px solid #3f645d; border-radius: 18px; }
   body:not(.large-text) .story-hud { left: 1.6rem; top: 1.3rem; }
+  body:not(.large-text) .story-canvas, body:not(.large-text) .story-labels { inset: 7.6rem 1rem 3.6rem; }
   body:not(.large-text) .story-legend { left: 1.6rem; bottom: 1.3rem; }
   body:not(.large-text) .story-step { min-height: calc(100svh - var(--chrome)); justify-content: center; padding-block: 2rem; }
   body:not(.large-text) .step-card { padding: 0; background: none; box-shadow: none; }
@@ -631,7 +627,7 @@ body.alto-contraste .contacts li, body.alto-contraste .help-banner p { color: #0
   .a11y-bar button { min-height: 2rem; padding-inline: .45rem; font-size: .7rem; }
   .nav { gap: .5rem; }
   .brand { gap: .55rem; font-size: .78rem; }
-  .brand-mark { flex-basis: 2.1rem; height: 2.1rem; font-size: 1.2rem; }
+  .brand-mark { flex-basis: 2.3rem; width: 2.3rem; height: 2.3rem; }
   .brand small { display: none; }
   body.large-text .brand > span:last-child { display: none; }
   body.large-text .hero h1 { font-size: clamp(2rem, 9vw, 3rem); max-width: 16ch; }
